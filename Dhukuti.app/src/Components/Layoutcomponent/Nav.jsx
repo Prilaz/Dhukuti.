@@ -46,11 +46,11 @@ const Nav = ({ toggleTheme }) => {
           isDark ? "bg-dark" : "bg-light"
         } shadow-sm py-2 fixed-top`}
       >
-        <div className="container-fluid position-relative d-flex align-items-center justify-content-between">
+        <div className="container-fluid position-relative d-flex align-items-center justify-content-between ">
           {/* Left: Logo */}
           <Link
             to="/"
-            className="navbar-brand fw-bold fs-4 d-flex align-items-center me-3"
+            className="navbar-brand fw-bold fs-4 d-flex align-items-center me-3 "
           >
             <span className="text-warning">Dhukuti</span>
             <span className="text-muted">.</span>
