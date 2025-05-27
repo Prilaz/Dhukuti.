@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Box, useTheme, IconButton } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
+import logo from "../../assets/Dhukuti.png";
 
 const Nav = ({ toggleTheme }) => {
   const theme = useTheme();
@@ -57,12 +58,19 @@ const Nav = ({ toggleTheme }) => {
         } shadow-sm py-2 fixed-top`}
       >
         <div className="container-fluid d-flex justify-content-between align-items-center">
-          <Link
-            to="/"
-            className="navbar-brand fw-bold fs-4 d-flex align-items-center me-4"
-          >
-            <span className="text-warning">Dhukuti</span>
-            <span className="text-muted">.</span>
+          <Link to="/" className="navbar-brand d-flex align-items-center me-4">
+            <img
+              src={logo}
+              alt="Dhukuti Logo"
+              style={{
+                height: "50px",
+                width: "auto",
+                marginTop: "10px",
+                marginLeft: "20px",
+              }}
+              className="me-2"
+            />
+            <span className="fw-bold fs-4 text-warning"></span>
           </Link>
 
           <button
@@ -121,7 +129,7 @@ const Nav = ({ toggleTheme }) => {
               </div>
             </form>
 
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center ">
               <IconButton
                 sx={{ mr: 2, color: isDark ? "white" : "inherit" }}
                 onClick={toggleTheme}
@@ -135,7 +143,7 @@ const Nav = ({ toggleTheme }) => {
                 className="btn btn-link position-relative me-3 p-0"
                 onClick={closeNavbar}
               >
-                <i className="bi bi-cart3 fs-5"></i>
+                <i className="bi bi-cart3 fs-5 text-warning "></i>
                 {cartItemCount > 0 && (
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                     {cartItemCount}
@@ -145,7 +153,7 @@ const Nav = ({ toggleTheme }) => {
 
               <Link
                 to="/login"
-                className="btn btn-outline-primary"
+                className="btn btn-outline-warning pr-3"
                 onClick={closeNavbar}
               >
                 Login
