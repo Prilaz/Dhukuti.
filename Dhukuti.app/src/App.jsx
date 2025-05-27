@@ -1,12 +1,6 @@
-import { useState } from "react";
-import "./App.css";
+import React from "react";
 import MyRoutes from "./MyRoutes";
 
-function App() {
-  return;
-  <>
-    <MyRoutes />
-  </>;
-}
+const App = () => <MyRoutes />;
 
 export default App;

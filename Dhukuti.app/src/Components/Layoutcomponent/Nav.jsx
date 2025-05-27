@@ -1,187 +1,136 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { Box, useTheme, IconButton } from "@mui/material";
+import { Brightness4, Brightness7 } from "@mui/icons-material";
 
-import { Box, useTheme } from "@mui/material";
-
-const Nav = () => {
+const Nav = ({ toggleTheme }) => {
   const theme = useTheme();
-  const notificationCount = 5;
-
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
   const isDark = theme.palette.mode === "dark";
-  const textColor = isDark ? "text-light" : "text-dark";
-  const bgColor = isDark ? "bg-dark" : "bg-white";
+
+  // Mock data
+  const cartItemCount = 0;
+
+  const navItems = [
+    { to: "/", icon: "house-door", label: "Home" },
+    { to: "/shop", icon: "shop", label: "Shop" },
+    { to: "/artisans", icon: "people", label: "Artisans" },
+    { to: "/about", icon: "info-circle", label: "About" },
+  ];
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
 
   return (
     <Box
+      component="nav"
       sx={{
-        backgroundColor: theme.palette.background.default,
-        color: theme.palette.text.primary,
+        "& .navbar": {
+          minHeight: "80px",
+          padding: "1rem 0",
+        },
+        "& .nav-link": {
+          fontSize: "1.1rem",
+          padding: "0.8rem 1.2rem",
+        },
       }}
     >
-      <nav
-        className={`navbar navbar-expand-lg ${bgColor} shadow-sm py-2 px-3 fixed-top`}
+      <div
+        className={`navbar navbar-expand-lg ${
+          isDark ? "bg-dark" : "bg-light"
+        } shadow-sm py-2 fixed-top`}
       >
-        <div className="container-fluid d-flex align-items-center">
-          {/* Logo */}
-          <Link to="/" className="navbar-brand text-base fw-semibold">
-            <i className="bi bi-linkedin fs-1 text-primary" />
+        <div className="container-fluid position-relative d-flex align-items-center justify-content-between">
+          {/* Left: Logo */}
+          <Link
+            to="/"
+            className="navbar-brand fw-bold fs-4 d-flex align-items-center me-3"
+          >
+            <span className="text-warning">Dhukuti</span>
+            <span className="text-muted">.</span>
           </Link>
 
-          {/* Search Bar */}
-          <form className="d-flex flex-grow-1 mx-3" role="search">
-            <div className="input-group">
-              <input
-                className={`form-control rounded-pill border-secondary ${
-                  isDark ? "bg-dark text-light" : ""
-                }`}
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-              />
-            </div>
-          </form>
-
-          {/* Toggle Button for Mobile */}
-          <button
-            className="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+          {/* Center: Navigation */}
+          <div
+            className="position-absolute start-50 translate-middle-x d-none d-lg-block"
+            style={{ zIndex: 1 }}
           >
-            <span
-              className="navbar-toggler-icon"
-              sx={{
-                backgroundColor: theme.palette.background.default,
-                color: theme.palette.text.primary,
-              }}
-            ></span>
-          </button>
-
-          {/* Navbar Items */}
-          <div className="collapse navbar-collapse" id="navbarNav">
-            <ul className="navbar-nav mx-auto align-items-center gap-3">
-              {[
-                { to: "/", icon: "house-door-fill", label: "Home" },
-                { to: "/mynetwork", icon: "people-fill", label: "My Network" },
-                { to: "/Job", icon: "briefcase-fill", label: "Jobs" },
-                {
-                  to: "/messages",
-                  icon: "chat-left-text-fill",
-                  label: "Messaging",
-                },
-              ].map(({ to, icon, label }) => (
-                <li className="nav-item" key={to}>
+            <ul className="navbar-nav flex-row align-items-center gap-3">
+              {navItems.map((item) => (
+                <li className="nav-item" key={item.to}>
                   <Link
-                    to={to}
-                    className={`nav-link ${textColor} fw-semibold d-flex flex-column align-items-center nav-hover`}
+                    to={item.to}
+                    className="nav-link d-flex align-items-center"
                   >
-                    <i className={`bi bi-${icon} fs-5`}></i>
-                    {label}
+                    <i className={`bi bi-${item.icon} me-1`}></i>
+                    {item.label}
                   </Link>
                 </li>
               ))}
-
-              {/* Notifications */}
-              <li className="nav-item position-relative">
-                <Link
-                  to="/notifications"
-                  className={`nav-link ${textColor} fw-semibold d-flex flex-column align-items-center nav-hover`}
-                >
-                  <i className="bi bi-bell-fill fs-5 position-relative">
-                    {notificationCount > 0 && (
-                      <span className="badge bg-danger notification-badge">
-                        {notificationCount}
-                      </span>
-                    )}
-                  </i>
-                  Notifications
-                </Link>
-              </li>
-
-              {/* Profile Dropdown */}
-              <li className="nav-item dropdown">
-                <button
-                  className={`nav-link dropdown-toggle ${textColor} fw-semibold d-flex flex-column align-items-center nav-hover`}
-                  data-bs-toggle="dropdown"
-                >
-                  <i className="bi bi-person-circle fs-5"></i>
-                  Me
-                </button>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link to="#" className="dropdown-item">
-                      Profile
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="#" className="dropdown-item">
-                      Settings
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <Link to="/login" className="dropdown-item">
-                      Logout
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-
-              {/* Business Dropdown */}
-              <li className="nav-item dropdown">
-                <button
-                  className={`nav-link dropdown-toggle ${textColor} fw-semibold d-flex flex-column align-items-center nav-hover`}
-                  data-bs-toggle="dropdown"
-                >
-                  <i className="bi bi-grid-3x3-gap-fill fs-5"></i>
-                  For Business
-                </button>
-                <ul className="dropdown-menu">
-                  <li>
-                    <Link to="#" className="dropdown-item">
-                      Business Services
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="#" className="dropdown-item">
-                      Advertise
-                    </Link>
-                  </li>
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-                  <li>
-                    <Link to="#" className="dropdown-item">
-                      More
-                    </Link>
-                  </li>
-                </ul>
-              </li>
-
-              {/* Premium Offer */}
-              <li className="nav-item">
-                <Link
-                  to="#"
-                  className={`nav-link text-primary fw-bold nav-hover`}
-                >
-                  Try Premium for $0
-                </Link>
-              </li>
             </ul>
           </div>
 
-          {/* Theme Toggle Button */}
-          <div>
-            <ToggleThemeButton />
+          {/* Right: Search and Actions */}
+          <div className="d-flex align-items-center ms-auto">
+            {/* Search Form */}
+            <form className="d-flex me-3" onSubmit={handleSearch}>
+              <div className="input-group">
+                <input
+                  className={`form-control ${
+                    isDark ? "bg-dark text-light border-secondary" : ""
+                  }`}
+                  type="search"
+                  placeholder="Search handmade treasures..."
+                  aria-label="Search"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button
+                  className={`btn ${
+                    isDark ? "btn-outline-light" : "btn-outline-dark"
+                  }`}
+                  type="submit"
+                >
+                  <i className="bi bi-search"></i>
+                </button>
+              </div>
+            </form>
+
+            {/* Theme Toggle */}
+            <IconButton
+              sx={{ mr: 2, color: isDark ? "white" : "inherit" }}
+              onClick={toggleTheme}
+              aria-label="toggle theme"
+            >
+              {isDark ? <Brightness7 /> : <Brightness4 />}
+            </IconButton>
+
+            {/* Cart */}
+            <Link
+              to="/cart"
+              className="btn btn-link position-relative me-3 p-0"
+            >
+              <i className="bi bi-cart3 fs-5"></i>
+              {cartItemCount > 0 && (
+                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
+
+            {/* Login */}
+            <Link to="/login" className="btn btn-outline-primary">
+              Login
+            </Link>
           </div>
         </div>
-      </nav>
+      </div>
     </Box>
   );
 };
