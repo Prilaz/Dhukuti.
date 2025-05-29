@@ -5,7 +5,7 @@ import Explore from "../Components/HomeComponent/Explore";
 const Home = () => {
   return (
     <>
-      <div className="home-container mt-5">
+      <div className="home-container " style={{ marginTop: "6rem" }}>
         <Carousel />
       </div>
       <Explore />
