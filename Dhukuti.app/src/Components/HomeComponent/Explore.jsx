@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Explore = () => {
   return (
@@ -16,9 +17,9 @@ const Explore = () => {
               <div className="card-body">
                 <h5 className="card-title">Product 1</h5>
                 <p className="card-text">Description of Product 1.</p>
-                <a href="#" className="btn btn-primary">
+                <Link to="/" className="btn btn-primary">
                   View Details
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -32,9 +33,9 @@ const Explore = () => {
               <div className="card-body">
                 <h5 className="card-title">Product 2</h5>
                 <p className="card-text">Description of Product 2.</p>
-                <a href="#" className="btn btn-primary">
+                <Link to="/" className="btn btn-primary">
                   View Details
-                </a>
+                </Link>
               </div>
             </div>
           </div>
@@ -48,15 +49,14 @@ const Explore = () => {
               <div className="card-body">
                 <h5 className="card-title">Product 3</h5>
                 <p className="card-text">Description of Product 3.</p>
-                <a href="#" className="btn btn-primary">
+                <Link to="/" className="btn btn-primary">
                   View Details
-                </a>
+                </Link>
               </div>
             </div>
           </div>
         </div>
-      </div>{" "}
-      {/* <-- This was missing */}
+      </div>
     </>
   );
 };
