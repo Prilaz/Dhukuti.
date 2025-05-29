@@ -1,6 +1,7 @@
 import React from "react";
 import Carousel from "../Components/HomeComponent/Carousel";
 import Explore from "../Components/HomeComponent/Explore";
+import Breakstep from "../Components/HomeComponent/Breakstep";
 
 const Home = () => {
   return (
@@ -9,6 +10,7 @@ const Home = () => {
         <Carousel />
       </div>
       <Explore />
+      <Breakstep />
     </>
   );
 };

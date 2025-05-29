@@ -44,8 +44,8 @@ const Explore = () => {
               <div className="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50 p-3">
                 <h5 className="card-title">{item.title}</h5>
                 <p className="card-text">{item.description}</p>
-                <Link to="/" className="btn btn-outline-warning mt-2">
-                  View Details
+                <Link to="/" className="btn btn-outline-warning mt-2 ">
+                  Shop Now
                 </Link>
               </div>
             </div>
