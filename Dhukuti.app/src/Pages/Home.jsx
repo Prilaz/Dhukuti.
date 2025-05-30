@@ -6,7 +6,7 @@ import Breakstep from "../Components/HomeComponent/Breakstep";
 const Home = () => {
   return (
     <>
-      <div className="home-container " style={{ marginTop: "6rem" }}>
+      <div className="home-container " style={{ marginTop: "5rem" }}>
         <Carousel />
       </div>
       <Explore />

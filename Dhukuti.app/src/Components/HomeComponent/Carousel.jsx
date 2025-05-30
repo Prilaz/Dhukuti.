@@ -1,7 +1,9 @@
 import React from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import logo from "../../assets/Dhukuti.png";
+import C1 from "../../assets/C1.png";
+import C2 from "../../assets/C2.png";
+import C3 from "../../assets/C3.png";
 
 const MyCarousel = () => {
   return (
@@ -34,21 +36,21 @@ const MyCarousel = () => {
       </div>
       <div className="carousel-inner">
         <div className="carousel-item active" data-bs-interval="5000">
-          <img src={logo} className="d-block w-100" alt="..." />
+          <img src={C1} className="d-block w-100" alt="..." />
           <div className="carousel-caption d-none d-md-block">
             <h5>First slide label</h5>
             <p>Some representative placeholder content for the first slide.</p>
           </div>
         </div>
         <div className="carousel-item" data-bs-interval="5000">
-          <img src={logo} className="d-block w-100" alt="..." />
+          <img src={C2} className="d-block w-100" alt="..." />
           <div className="carousel-caption d-none d-md-block">
             <h5>Second slide label</h5>
             <p>Some representative placeholder content for the second slide.</p>
           </div>
         </div>
         <div className="carousel-item" data-bs-interval="5000">
-          <img src={logo} className="d-block w-100" alt="..." />
+          <img src={C3} className="d-block w-100" alt="..." />
           <div className="carousel-caption d-none d-md-block">
             <h5>Third slide label</h5>
             <p>Some representative placeholder content for the third slide.</p>
