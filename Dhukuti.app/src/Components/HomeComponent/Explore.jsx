@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import Pashmina from "../../assets/Pashmina.png";
 import Woolen from "../../assets/Woolen.png";
 import Wooden from "../../assets/Wooden2.png";
+import ceramic from "../../assets/Ceramic.png";
+import thangka from "../../assets/thangka.png";
+import statues from "../../assets/Statues.png";
 
 const Explore = () => {
   return (
@@ -29,15 +32,18 @@ const Explore = () => {
           },
           {
             title: "Ceramic Art",
-            description: "Beautifully hand-painted ceramic pieces.",
+            description: "Beautifully crafted ceramic pieces.",
+            src: ceramic,
           },
           {
-            title: "Ceramic Art",
-            description: "Beautifully hand-painted ceramic pieces.",
+            title: "Thangka Paintings",
+            description: "Beautifully hand-painted thangka paintings.",
+            src: thangka,
           },
           {
-            title: "Ceramic Art",
-            description: "Beautifully hand-painted ceramic pieces.",
+            title: "Statues",
+            description: "Intricate statues representing Nepali culture.",
+            src: statues,
           },
         ].map((item, index) => (
           <div className="col-md-4 mb-4" key={index}>
