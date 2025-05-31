@@ -4,6 +4,7 @@ import Home from "./Pages/Home";
 import Layout from "./Components/Layoutcomponent/Layout";
 import Shop from "./Pages/Shop";
 import Artisans from "./Pages/Artisans";
+import "./App.css";
 
 const MyRoutes = () => {
   return (

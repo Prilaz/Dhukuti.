@@ -1,24 +1,31 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import logo from "../../assets/Dhukuti.png";
+import Pashmina from "../../assets/Pashmina.png";
+import Woolen from "../../assets/Woolen.png";
+import Wooden from "../../assets/Wooden2.png";
 
 const Explore = () => {
   return (
     <div className="container mt-5 pt-5">
-      <h1 className="text-center mb-5">Explore Our Collection</h1>
+      <h1 className="text-center " style={{ marginBottom: "90px" }}>
+        Explore Our Collection
+      </h1>
       <div className="row mt-4">
         {[
           {
             title: "Pashmina",
             description: "Soft and luxurious handcrafted pashmina.",
+            src: Pashmina,
           },
           {
             title: "Woolen",
             description: "Warm woolen goods straight from the Himalayas.",
+            src: Woolen,
           },
           {
             title: "Wooden Handicraft",
             description: "Elegant wooden artwork from Nepali artisans.",
+            src: Wooden,
           },
           {
             title: "Ceramic Art",
@@ -36,7 +43,7 @@ const Explore = () => {
           <div className="col-md-4 mb-4" key={index}>
             <div className="card text-white position-relative overflow-hidden border-0">
               <img
-                src={logo}
+                src={item.src}
                 className="card-img"
                 alt={item.title}
                 style={{ height: "300px", objectFit: "cover" }}
