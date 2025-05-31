@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/Dhukuti.png";
+import mask from "../../assets/mask.png"; // Adjust the path as necessary
 
 const Breakstep = () => {
   return (
@@ -7,7 +7,7 @@ const Breakstep = () => {
       <div className="row align-items-center mt-5 pt-5">
         <div className="col-md-6 text-center mb-4 mb-md-0">
           <img
-            src={logo}
+            src={mask}
             alt="Dhukuti Logo"
             className="img-fluid"
             style={{ maxHeight: "300px" }}

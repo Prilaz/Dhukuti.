@@ -10,7 +10,14 @@ import statues from "../../assets/Statues.png";
 const Explore = () => {
   return (
     <div className="container mt-5 pt-5">
-      <h1 className="text-center " style={{ marginBottom: "90px" }}>
+      <h1
+        className="text-center "
+        style={{
+          marginBottom: "90px",
+          fontFamily: "Georgia, serif",
+          fontWeight: "bold",
+        }}
+      >
         Explore Our Collection
       </h1>
       <div className="row mt-4">
