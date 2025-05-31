@@ -9,3 +9,30 @@
   border-radius: 10px;
   color: white;
 }
+
+.explore-card {
+  overflow: hidden;
+  border: none;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.explore-card:hover {
+  transform: scale(1.02);
+}
+
+.explore-card img {
+  transition: transform 0.5s ease;
+}
+
+.explore-card:hover img {
+  transform: scale(1.1);
+}
+
+.explore-card .card-img-overlay {
+  transition: background-color 0.3s ease;
+}
+
+.explore-card:hover .card-img-overlay {
+  background-color: rgba(0, 0, 0, 0.6); /* Darker on hover */
+}
