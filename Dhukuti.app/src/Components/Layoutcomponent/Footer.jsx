@@ -70,7 +70,7 @@ const Footer = () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <i className="bi bi-twitter fs-5"></i>
+                  <i className="bi bi-twitter-x fs-5"></i>
                 </a>
                 <a
                   href="https://youtube.com"
