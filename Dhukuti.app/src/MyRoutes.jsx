@@ -6,6 +6,7 @@ import Shop from "./Pages/Shop";
 import Artisans from "./Pages/Artisans";
 import "./App.css";
 import Login from "./AuthPage/Login";
+import Register from "./AuthPage/Register";
 
 const MyRoutes = () => {
   return (
@@ -18,6 +19,8 @@ const MyRoutes = () => {
             <Route path="/artisans" element={<Artisans />} />"
           </Route>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          {/* Add more routes as needed */}
         </Routes>
       </BrowserRouter>
     </>
