@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Box, useTheme, IconButton } from "@mui/material";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
-import logo from "../../assets/Dhukuti.png";
+import logo from "../../assets/Dhukuti.png"; // Adjust the path as necessary
 
 const Nav = ({ toggleTheme }) => {
   const theme = useTheme();

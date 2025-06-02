@@ -5,6 +5,7 @@ import Layout from "./Components/Layoutcomponent/Layout";
 import Shop from "./Pages/Shop";
 import Artisans from "./Pages/Artisans";
 import "./App.css";
+import Login from "./AuthPage/Login";
 
 const MyRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const MyRoutes = () => {
             <Route path="/shop" element={<Shop />} />
             <Route path="/artisans" element={<Artisans />} />"
           </Route>
+          <Route path="/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </>

@@ -15,12 +15,12 @@ const Breakstep = () => {
         </div>
 
         <div className="col-md-6 text-center text-md-start">
-          <h1 className="mb-4">Explore Our Collection</h1>
+          <h1 className="mb-4 text-red-500">Get 10% Off on FIRST PURCHASE</h1>
           <p className="lead">
             Discover the richness of Nepali handcrafted heritage — from Pashmina
             and Woolen goods to Wooden Artistry.
           </p>
-          <button className="btn btn-outline-warning mt-3">Shop Now</button>
+          <button className="btn btn-outline-warning mt-3">Join Now</button>
         </div>
       </div>
     </div>
