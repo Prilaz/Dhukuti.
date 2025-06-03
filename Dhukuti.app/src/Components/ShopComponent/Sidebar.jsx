@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Checkbox,
@@ -18,9 +18,18 @@ const categories = [
   "Brass Statue",
 ];
 
-const Sidebar = ({ onFilterChange }) => {
-  const [selectedCategories, setSelectedCategories] = useState([]);
+const Sidebar = ({ onFilterChange, initialCategories = [] }) => {
+  const [selectedCategories, setSelectedCategories] =
+    useState(initialCategories);
   const [priceRange, setPriceRange] = useState([500, 5000]);
+
+  useEffect(() => {
+    setSelectedCategories(initialCategories);
+  }, [initialCategories]);
+
+  useEffect(() => {
+    onFilterChange?.({ categories: selectedCategories, price: priceRange });
+  }, [selectedCategories, priceRange]);
 
   const handleCategoryChange = (category) => {
     const updated = selectedCategories.includes(category)
@@ -28,12 +37,10 @@ const Sidebar = ({ onFilterChange }) => {
       : [...selectedCategories, category];
 
     setSelectedCategories(updated);
-    onFilterChange?.({ categories: updated, price: priceRange });
   };
 
   const handlePriceChange = (event, newValue) => {
     setPriceRange(newValue);
-    onFilterChange?.({ categories: selectedCategories, price: newValue });
   };
 
   return (
@@ -52,7 +59,6 @@ const Sidebar = ({ onFilterChange }) => {
 
       <Divider sx={{ mb: 2 }} />
 
-      {/* Categories */}
       <Typography variant="subtitle1" gutterBottom>
         Categories
       </Typography>
@@ -73,7 +79,6 @@ const Sidebar = ({ onFilterChange }) => {
 
       <Divider sx={{ my: 3 }} />
 
-      {/* Price */}
       <Typography variant="subtitle1" gutterBottom>
         Price Range (Rs)
       </Typography>
@@ -89,7 +94,7 @@ const Sidebar = ({ onFilterChange }) => {
         max={10000}
         step={100}
         sx={{
-          color: "#ffc107", // Yellow color (MUI warning color)
+          color: "#ffc107",
           "& .MuiSlider-thumb": {
             backgroundColor: "#ffc107",
           },

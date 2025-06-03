@@ -1,24 +1,28 @@
-import React, { useState } from "react";
-import {
-  useMediaQuery,
-  IconButton,
-  Typography,
-  Drawer,
-  Box,
-} from "@mui/material";
-import FilterAltIcon from "@mui/icons-material/FilterAlt";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../Components/ShopComponent/Sidebar";
 import Shopmain from "../Components/ShopComponent/Shopmain";
 import allProducts from "../Data/Product.jsx";
+import { useLocation } from "react-router-dom";
 
 const Shop = () => {
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const initialCategory = query.get("category");
+
   const [filters, setFilters] = useState({
-    categories: [],
+    categories: initialCategory ? [initialCategory] : [],
     price: [100, 10000],
   });
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const isMobile = useMediaQuery("(max-width:768px)");
+  useEffect(() => {
+    // If category changes from URL (on navigation)
+    if (initialCategory && !filters.categories.includes(initialCategory)) {
+      setFilters((prev) => ({
+        ...prev,
+        categories: [initialCategory],
+      }));
+    }
+  }, [initialCategory]);
 
   const handleFilterChange = (newFilters) => {
     setFilters(newFilters);
@@ -30,48 +34,20 @@ const Shop = () => {
       filters.categories.includes(product.category);
     const inPrice =
       product.price >= filters.price[0] && product.price <= filters.price[1];
+
     return inCategory && inPrice;
   });
 
   return (
     <div className="container-fluid mt-5 pt-5">
       <div className="row">
-        {/* Filter button for mobile */}
-        {isMobile && (
-          <Box
-            className="col-12 mb-3"
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-            px={2}
-          >
-            <Typography variant="h6">Filter</Typography>
-            <IconButton onClick={() => setDrawerOpen(true)} color="primary">
-              <FilterAltIcon />
-            </IconButton>
-          </Box>
-        )}
-
-        {/* Sidebar on desktop */}
-        {!isMobile && (
-          <div className="col-md-3">
-            <Sidebar onFilterChange={handleFilterChange} />
-          </div>
-        )}
-
-        {/* Drawer for mobile filter */}
-        <Drawer
-          anchor="left"
-          open={drawerOpen}
-          onClose={() => setDrawerOpen(false)}
-          PaperProps={{ sx: { width: "80%" } }}
-        >
-          <Box p={2} pt={4}>
-            <Sidebar onFilterChange={handleFilterChange} />
-          </Box>
-        </Drawer>
-
-        <div className={isMobile ? "col-12" : "col-md-9"}>
+        <div className="col-md-3">
+          <Sidebar
+            onFilterChange={handleFilterChange}
+            initialCategories={filters.categories}
+          />
+        </div>
+        <div className="col-md-9 ">
           <Shopmain products={filteredProducts} />
         </div>
       </div>

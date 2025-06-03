@@ -1,9 +1,34 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import C1 from "../../assets/C1.png";
 import C2 from "../../assets/C2.png";
 import Wooden from "../../assets/Wooden2.png";
 
 const MyCarousel = () => {
+  const slides = [
+    {
+      image: C1,
+      title: "Beautiful Craftsmanship from Nepal",
+      description: "Discover unique handmade pieces rooted in rich tradition.",
+      buttonText: "Explore Collection",
+      link: "/shop",
+    },
+    {
+      image: C2,
+      title: "Timeless Art Passed Through Generations",
+      description: "Each item tells a story of heritage and skill.",
+      buttonText: "Shop Now",
+      link: "/shop",
+    },
+    {
+      image: Wooden,
+      title: "Explore Unique Wooden Handicrafts",
+      description: "Elegance and tradition carved into every design.",
+      buttonText: "View Products",
+      link: "/shop",
+    },
+  ];
+
   return (
     <div
       id="carouselDark"
@@ -12,55 +37,56 @@ const MyCarousel = () => {
     >
       {/* Indicators */}
       <div className="carousel-indicators">
-        <button
-          type="button"
-          data-bs-target="#carouselDark"
-          data-bs-slide-to="0"
-          className="active"
-          aria-current="true"
-          aria-label="Slide 1"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselDark"
-          data-bs-slide-to="1"
-          aria-label="Slide 2"
-        ></button>
-        <button
-          type="button"
-          data-bs-target="#carouselDark"
-          data-bs-slide-to="2"
-          aria-label="Slide 3"
-        ></button>
+        {slides.map((_, i) => (
+          <button
+            key={i}
+            type="button"
+            data-bs-target="#carouselDark"
+            data-bs-slide-to={i}
+            className={i === 0 ? "active" : ""}
+            aria-label={`Slide ${i + 1}`}
+          ></button>
+        ))}
       </div>
 
-      {/* Carousel Items */}
+      {/* Slides */}
       <div className="carousel-inner">
-        <div className="carousel-item active" data-bs-interval="5000">
-          <img src={C1} className="d-block w-100 carousel-img" alt="Slide 1" />
-          <div className="carousel-caption d-none d-md-block">
-            <h5>First Slide</h5>
-            <p>Beautiful craftsmanship from Nepal.</p>
+        {slides.map((slide, i) => (
+          <div
+            key={i}
+            className={`carousel-item ${i === 0 ? "active" : ""}`}
+            data-bs-interval="5000"
+          >
+            <img
+              src={slide.image}
+              className="d-block w-100 carousel-img"
+              alt={`Slide ${i + 1}`}
+              style={{ height: "75vh", objectFit: "cover" }}
+            />
+            <div
+              className="carousel-caption d-none d-md-block"
+              style={{
+                backgroundColor: "rgba(0,0,0,0.5)",
+                padding: "20px",
+                borderRadius: "10px",
+              }}
+            >
+              <h2 style={{ color: "white", fontWeight: "bold" }}>
+                {slide.title}
+              </h2>
+              <p style={{ color: "#eee", fontSize: "1.1rem" }}>
+                {slide.description}
+              </p>
+              <Link
+                to={slide.link}
+                className="btn btn-warning mt-2 px-4 py-2"
+                style={{ fontWeight: "600", borderRadius: "30px" }}
+              >
+                {slide.buttonText}
+              </Link>
+            </div>
           </div>
-        </div>
-        <div className="carousel-item" data-bs-interval="5000">
-          <img src={C2} className="d-block w-100 carousel-img" alt="Slide 2" />
-          <div className="carousel-caption d-none d-md-block">
-            <h5>Second Slide</h5>
-            <p>Timeless art passed down through generations.</p>
-          </div>
-        </div>
-        <div className="carousel-item" data-bs-interval="5000">
-          <img
-            src={Wooden}
-            className="d-block w-100 carousel-img"
-            alt="Slide 3"
-          />
-          <div className="carousel-caption d-none d-md-block">
-            <h5>Third Slide</h5>
-            <p>Explore unique wooden handicrafts.</p>
-          </div>
-        </div>
+        ))}
       </div>
 
       {/* Controls */}
@@ -70,7 +96,7 @@ const MyCarousel = () => {
         data-bs-target="#carouselDark"
         data-bs-slide="prev"
       >
-        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span className="carousel-control-prev-icon" aria-hidden="true" />
         <span className="visually-hidden">Previous</span>
       </button>
       <button
@@ -79,7 +105,7 @@ const MyCarousel = () => {
         data-bs-target="#carouselDark"
         data-bs-slide="next"
       >
-        <span className="carousel-control-next-icon" aria-hidden="true"></span>
+        <span className="carousel-control-next-icon" aria-hidden="true" />
         <span className="visually-hidden">Next</span>
       </button>
     </div>

@@ -26,31 +26,37 @@ const Explore = () => {
             title: "Pashmina",
             description: "Soft and luxurious handcrafted pashmina.",
             src: Pashmina,
+            to: "/shop?category=Pashmina",
           },
           {
             title: "Woolen",
             description: "Warm woolen goods straight from the Himalayas.",
             src: Woolen,
+            to: "/shop?category=Woolen",
           },
           {
             title: "Wooden Handicraft",
             description: "Elegant wooden artwork from Nepali artisans.",
             src: Wooden,
+            to: "/shop?category=Wooden",
           },
           {
             title: "Ceramic Art",
             description: "Beautifully crafted ceramic pieces.",
             src: ceramic,
+            to: "/shop?category=Ceramic",
           },
           {
             title: "Thangka Paintings",
             description: "Beautifully hand-painted thangka paintings.",
             src: thangka,
+            to: "/shop?category=Thangka",
           },
           {
             title: "Statues",
             description: "Intricate statues representing Nepali culture.",
             src: statues,
+            to: "/shop?category=Statues",
           },
         ].map((item, index) => (
           <div className="col-md-4 mb-4" key={index}>
@@ -64,7 +70,10 @@ const Explore = () => {
               <div className="card-img-overlay d-flex flex-column justify-content-end bg-dark bg-opacity-50 p-3">
                 <h5 className="card-title">{item.title}</h5>
                 <p className="card-text">{item.description}</p>
-                <Link to="/" className="btn btn-outline-warning mt-2 ">
+                <Link
+                  to={`/shop?category=${item.title}`}
+                  className="btn btn-outline-warning mt-2"
+                >
                   Shop Now
                 </Link>
               </div>

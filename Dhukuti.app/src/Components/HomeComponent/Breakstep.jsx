@@ -1,5 +1,6 @@
 import React from "react";
 import mask from "../../assets/mask.png"; // Adjust the path as necessary
+import { Link } from "react-router-dom";
 
 const Breakstep = () => {
   return (
@@ -20,7 +21,9 @@ const Breakstep = () => {
             Discover the richness of Nepali handcrafted heritage — from Pashmina
             and Woolen goods to Wooden Artistry.
           </p>
-          <button className="btn btn-outline-warning mt-3">Join Now</button>
+          <Link to="/register" className="btn btn-outline-warning mt-3">
+            Join Now
+          </Link>
         </div>
       </div>
     </div>
