@@ -88,6 +88,18 @@ const Sidebar = ({ onFilterChange }) => {
         min={100}
         max={10000}
         step={100}
+        sx={{
+          color: "#ffc107", // Yellow color (MUI warning color)
+          "& .MuiSlider-thumb": {
+            backgroundColor: "#ffc107",
+          },
+          "& .MuiSlider-track": {
+            backgroundColor: "#ffc107",
+          },
+          "& .MuiSlider-rail": {
+            backgroundColor: "#eee",
+          },
+        }}
       />
     </Box>
   );

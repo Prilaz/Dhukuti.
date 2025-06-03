@@ -7,11 +7,13 @@ import Artisans from "./Pages/Artisans";
 import "./App.css";
 import Login from "./AuthPage/Login";
 import Register from "./AuthPage/Register";
+import ScrollToTop from "./Components/ScrollToTop";
 
 const MyRoutes = () => {
   return (
     <>
       <BrowserRouter>
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />

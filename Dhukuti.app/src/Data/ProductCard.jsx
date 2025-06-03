@@ -29,15 +29,12 @@ const ProductCard = ({ product }) => {
           Rs. {product.price}
         </Typography>
       </CardContent>
-      <Button
-        component={Link}
+      <Link
+        className="btn btn-outline-warning m-3"
         to={`/product/${product.id}`}
-        variant="contained"
-        color="primary"
-        sx={{ m: 2 }}
       >
         View Product
-      </Button>
+      </Link>
     </Card>
   );
 };
