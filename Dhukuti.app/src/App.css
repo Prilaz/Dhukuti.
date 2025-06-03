@@ -36,3 +36,11 @@
 .explore-card:hover .card-img-overlay {
   background-color: rgba(0, 0, 0, 0.6);
 }
+
+.MuiFormLabel-root {
+  color: #333;
+  font-size: 1rem;
+}
+.MuiChip-root {
+  margin-bottom: 8px;
+}
