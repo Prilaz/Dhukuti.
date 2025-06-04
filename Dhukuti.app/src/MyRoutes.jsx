@@ -8,6 +8,7 @@ import "./App.css";
 import Login from "./AuthPage/Login";
 import Register from "./AuthPage/Register";
 import ScrollToTop from "./Components/ScrollToTop";
+import AdminDashboard from "./Pages/Admin";
 
 const MyRoutes = () => {
   return (
@@ -22,6 +23,8 @@ const MyRoutes = () => {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+
           {/* Add more routes as needed */}
         </Routes>
       </BrowserRouter>
