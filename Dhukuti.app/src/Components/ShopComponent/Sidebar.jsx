@@ -17,10 +17,10 @@ import { useTheme } from "@mui/material/styles";
 const categories = [
   "Pashmina",
   "Woolen",
-  "Wooden",
+  "Wooden Handicrafts",
   "Ceramic",
-  "Thanka Art",
-  "Brass Statue",
+  "Thangka Art",
+  "Statue",
 ];
 
 const SIDEBAR_WIDTH = 360;
@@ -124,7 +124,6 @@ const Sidebar = ({ onFilterChange, initialCategories = [] }) => {
     <>
       {isMobile ? (
         <>
-          {/* Filter bar in normal document flow (below navbar) */}
           <Box
             sx={{
               display: "flex",

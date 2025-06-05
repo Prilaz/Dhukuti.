@@ -35,22 +35,22 @@ const Explore = () => {
             to: "/shop?category=Woolen",
           },
           {
-            title: "Wooden Handicraft",
+            title: "Wooden Handicrafts",
             description: "Elegant wooden artwork from Nepali artisans.",
             src: Wooden,
             to: "/shop?category=Wooden",
           },
           {
-            title: "Ceramic Art",
+            title: "Ceramic",
             description: "Beautifully crafted ceramic pieces.",
             src: ceramic,
             to: "/shop?category=Ceramic",
           },
           {
-            title: "Thangka Paintings",
+            title: "Thangka Art",
             description: "Beautifully hand-painted thangka paintings.",
             src: thangka,
-            to: "/shop?category=Thangka",
+            to: "/shop?category=Thangka Art",
           },
           {
             title: "Statues",
