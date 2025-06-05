@@ -61,7 +61,7 @@ const MyCarousel = () => {
               src={slide.image}
               className="d-block w-100 carousel-img"
               alt={`Slide ${i + 1}`}
-              style={{ height: "75vh", objectFit: "cover" }}
+              style={{ height: "65vh", objectFit: "cover" }}
             />
             <div
               className="carousel-caption d-none d-md-block"
