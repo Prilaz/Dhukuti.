@@ -9,6 +9,7 @@ import Login from "./AuthPage/Login";
 import Register from "./AuthPage/Register";
 import ScrollToTop from "./Components/ScrollToTop";
 import AdminDashboard from "./Pages/Admin";
+import About from "./Pages/About";
 
 const MyRoutes = () => {
   return (
@@ -19,7 +20,8 @@ const MyRoutes = () => {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="/shop" element={<Shop />} />
-            <Route path="/artisans" element={<Artisans />} />"
+            <Route path="/artisans" element={<Artisans />} />
+            <Route path="/about" element={<About />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
