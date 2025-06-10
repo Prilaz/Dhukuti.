@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import C1 from "../../assets/C1.png";
 import C2 from "../../assets/C2.png";
 import Wooden from "../../assets/Wooden2.png";
+import W from "../../assets/W.png";
+import p1 from "../../assets/p1.jpg";
 
 const MyCarousel = () => {
   const slides = [
@@ -22,6 +24,20 @@ const MyCarousel = () => {
     },
     {
       image: Wooden,
+      title: "Explore Unique Wooden Handicrafts",
+      description: "Elegance and tradition carved into every design.",
+      buttonText: "View Products",
+      link: "/shop",
+    },
+    {
+      image: W,
+      title: "Explore Unique Wooden Handicrafts",
+      description: "Elegance and tradition carved into every design.",
+      buttonText: "View Products",
+      link: "/shop",
+    },
+    {
+      image: p1,
       title: "Explore Unique Wooden Handicrafts",
       description: "Elegance and tradition carved into every design.",
       buttonText: "View Products",

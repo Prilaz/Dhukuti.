@@ -7,19 +7,23 @@ import DhukutiServices from "../Components/HomeComponent/Services";
 const Home = () => {
   return (
     <>
-      <div className="home-container " style={{ marginTop: "5rem" }}>
-        <Carousel />
-      </div>
-      <Explore />
-      <Breakstep />
       <div
         className="home-container "
         style={{
-          margin: "8rem 0rem",
-          padding: "5rem 0rem",
-          backgroundColor: "#fff",
+          marginTop: "5rem",
+
+          backgroundColor: "	#FFFFFF",
         }}
       >
+        <Carousel />
+      </div>
+      <div className="home-container mt-0">
+        <Explore />
+      </div>
+      <div>
+        <Breakstep />
+      </div>
+      <div>
         <DhukutiServices />
       </div>
     </>

@@ -26,7 +26,14 @@ const services = [
 
 const DhukutiServices = () => {
   return (
-    <Box sx={{ py: 0, px: 0, backgroundColor: "#fff" }}>
+    <Box
+      sx={{
+        py: 6,
+        px: 5,
+        margin: "6rem 2rem",
+        borderRadius: "10px",
+      }}
+    >
       <Grid container spacing={4} justifyContent="center">
         {services.map((service, index) => (
           <Grid item xs={12} sm={4} key={index}>
