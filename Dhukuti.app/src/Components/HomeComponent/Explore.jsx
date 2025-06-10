@@ -13,7 +13,7 @@ const Explore = () => {
       <h1
         className="text-center "
         style={{
-          marginBottom: "90px",
+          marginBottom: "80px",
           fontFamily: "Georgia, serif",
           fontWeight: "bold",
         }}

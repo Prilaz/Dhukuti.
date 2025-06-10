@@ -1,46 +1,47 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import C1 from "../../assets/C1.png";
-import C2 from "../../assets/C2.png";
-import Wooden from "../../assets/Wooden2.png";
-import W from "../../assets/W.png";
-import p1 from "../../assets/p1.jpg";
+
+import p1 from "../../assets/p1.png";
+import p2 from "../../assets/p2.png";
+import p3 from "../../assets/p3.png";
+import p4 from "../../assets/p4.png";
+import p5 from "../../assets/p5.png";
 
 const MyCarousel = () => {
   const slides = [
     {
-      image: C1,
-      title: "Beautiful Craftsmanship from Nepal",
-      description: "Discover unique handmade pieces rooted in rich tradition.",
-      buttonText: "Explore Collection",
-      link: "/shop",
-    },
-    {
-      image: C2,
-      title: "Timeless Art Passed Through Generations",
-      description: "Each item tells a story of heritage and skill.",
+      image: p1,
+      title: "Explore Unique Nepali Handicrafts",
+      description: "Discover the beauty of handcrafted art.",
       buttonText: "Shop Now",
       link: "/shop",
     },
     {
-      image: Wooden,
-      title: "Explore Unique Wooden Handicrafts",
-      description: "Elegance and tradition carved into every design.",
-      buttonText: "View Products",
+      image: p2,
+      title: " Find Your Perfect Handmade Creamic Piece",
+      description: " Crafted with love and tradition.",
+      buttonText: "Shop Now",
       link: "/shop",
     },
     {
-      image: W,
-      title: "Explore Unique Wooden Handicrafts",
-      description: "Elegance and tradition carved into every design.",
-      buttonText: "View Products",
+      image: p3,
+      title: "Thangka Art: A Journey Through Culture",
+      description: " Experience the spiritual essence of Nepal.",
+      buttonText: "Shop Now",
       link: "/shop",
     },
     {
-      image: p1,
+      image: p4,
       title: "Explore Unique Wooden Handicrafts",
       description: "Elegance and tradition carved into every design.",
-      buttonText: "View Products",
+      buttonText: "Shop Now",
+      link: "/shop",
+    },
+    {
+      image: p5,
+      title: "Statues: A Touch of Nepali Heritage",
+      description: " Intricate craftsmanship that tells a story.",
+      buttonText: "Shop Now",
       link: "/shop",
     },
   ];
@@ -77,7 +78,7 @@ const MyCarousel = () => {
               src={slide.image}
               className="d-block w-100 carousel-img"
               alt={`Slide ${i + 1}`}
-              style={{ height: "65vh", objectFit: "cover" }}
+              style={{ height: "70vh", objectFit: "cover" }}
             />
             <div
               className="carousel-caption d-none d-md-block"

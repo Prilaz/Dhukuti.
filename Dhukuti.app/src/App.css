@@ -50,12 +50,12 @@
 }
 
 .carousel-img {
-  height: 50vh;
   object-fit: cover;
   filter: brightness(0.85);
 }
 
 .carousel {
   position: relative;
-  height: 65vh;
+  height: 70vh;
+  margin-bottom: -30px;
 }
