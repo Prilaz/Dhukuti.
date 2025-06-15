@@ -32,7 +32,7 @@ A MERN stack e-commerce platform showcasing authentic Nepali handmade products, 
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react)
 ![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css)
-Bootstraop
+![Bootstrap](https://img.shields.io/badge/Bootstrap-blue)
 Material UI
 
 **Backend**  
