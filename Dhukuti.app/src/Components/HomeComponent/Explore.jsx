@@ -60,7 +60,7 @@ const Explore = () => {
           },
         ].map((item, index) => (
           <div className="col-md-4 mb-4" key={index}>
-            <div className="card explore-card text-white position-relative overflow-hidden border-0">
+            <div className="card explore-card text-white position-relative overflow-hidden border-0 ">
               <img
                 src={item.src}
                 className="card-img"

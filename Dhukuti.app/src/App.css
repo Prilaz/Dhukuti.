@@ -7,7 +7,10 @@
 
 .explore-card {
   overflow: hidden;
-  border: none;
+  border: 10px solid transparent;
+  border-radius: 50px 0;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
   position: relative;
   transition: transform 0.3s ease;
 }
