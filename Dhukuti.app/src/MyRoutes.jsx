@@ -8,8 +8,10 @@ import "./App.css";
 import Login from "./AuthPage/Login";
 import Register from "./AuthPage/Register";
 import ScrollToTop from "./Components/ScrollToTop";
-import AdminDashboard from "./Pages/Admin";
+import AdminDashboard from "./Pages/Adminpages/AdminAddProduct";
 import About from "./Pages/About";
+import AdminAddProduct from "./Pages/Adminpages/AdminAddProduct";
+import AdminProductList from "./Pages/Adminpages/AdminProductList";
 
 const MyRoutes = () => {
   return (
@@ -25,7 +27,9 @@ const MyRoutes = () => {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/admin" element={<AdminDashboard />} />
+
+          <Route path="/admin/products/add" element={<AdminAddProduct />} />
+          <Route path="/admin/products" element={<AdminProductList />} />
 
           {/* Add more routes as needed */}
         </Routes>
