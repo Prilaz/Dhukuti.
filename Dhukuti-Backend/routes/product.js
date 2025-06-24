@@ -1,27 +1,31 @@
-const express = require("express");
+// routes/productRoutes.js
+import express from "express";
+import Product from "../models/Product.js";
+import { upload } from "../middleware/upload.js";
+
 const router = express.Router();
-const Product = require("../models/Product");
 
-// POST /api/products/filter
-router.post("/filter", async (req, res) => {
-  try {
-    const { categories = [], price = [0, 100000] } = req.body;
+// POST: Add Product
+router.post("/", upload.single("image"), async (req, res) => {
+  const { title, price, category } = req.body;
+  const image = `/uploads/${req.file.filename}`;
 
-    const filter = {
-      price: { $gte: price[0], $lte: price[1] },
-    };
+  const product = new Product({ title, price, category, image });
+  await product.save();
 
-    if (categories.length > 0) {
-      filter.category = { $in: categories };
-    }
-
-    const products = await Product.find(filter);
-
-    res.status(200).json(products);
-  } catch (error) {
-    console.error("Filter error:", error);
-    res.status(500).json({ message: "Server error while filtering products" });
-  }
+  res.status(201).json({ product });
 });
 
-module.exports = router;
+// GET: All Products
+router.get("/", async (req, res) => {
+  const products = await Product.find();
+  res.json(products);
+});
+
+// DELETE: Product
+router.delete("/:id", async (req, res) => {
+  await Product.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
+});
+
+export default router;
