@@ -138,7 +138,7 @@ const About = () => (
                 borderRadius: 3,
                 boxShadow: 3,
                 transition: "transform 0.3s",
-                "&:hover": { transform: "scale(1.05)" },
+                "&:hover": { transform: "scale(2.05)" },
               }}
             />
           </Grid>
