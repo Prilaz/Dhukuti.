@@ -12,6 +12,7 @@ import AdminDashboard from "./Pages/Adminpages/AdminAddProduct";
 import About from "./Pages/About";
 import AdminAddProduct from "./Pages/Adminpages/AdminAddProduct";
 import AdminProductList from "./Pages/Adminpages/AdminProductList";
+import CartPage from "./Pages/Cart";
 
 const MyRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const MyRoutes = () => {
             <Route path="/shop" element={<Shop />} />
             <Route path="/artisans" element={<Artisans />} />
             <Route path="/about" element={<About />} />
+            <Route path="/cart" element={<CartPage />} />
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
