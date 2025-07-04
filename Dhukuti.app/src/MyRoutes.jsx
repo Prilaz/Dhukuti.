@@ -13,6 +13,7 @@ import About from "./Pages/About";
 import AdminAddProduct from "./Pages/Adminpages/AdminAddProduct";
 import AdminProductList from "./Pages/Adminpages/AdminProductList";
 import CartPage from "./Pages/Cart";
+import AdminProductForm from "./Pages/AdminProductForm";
 
 const MyRoutes = () => {
   return (
@@ -32,6 +33,12 @@ const MyRoutes = () => {
 
           <Route path="/admin/products/add" element={<AdminAddProduct />} />
           <Route path="/admin/products" element={<AdminProductList />} />
+
+          <Route path="/admin/products/add" element={<AdminProductForm />} />
+          <Route
+            path="/admin/products/edit/:id"
+            element={<AdminProductForm />}
+          />
 
           {/* Add more routes as needed */}
         </Routes>
