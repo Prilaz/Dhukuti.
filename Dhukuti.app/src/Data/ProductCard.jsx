@@ -52,7 +52,7 @@ const ProductCard = ({ product }) => {
 
   const handleAddToCart = async () => {
     const payload = {
-      userId: "user123", // Replace with real user ID if you have auth
+      userId: "user123",
       productId: product.id,
       title: product.title,
       image: product.image,
