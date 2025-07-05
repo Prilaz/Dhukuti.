@@ -19,7 +19,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("/api/login", {
+      const response = await fetch("http://localhost:5000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -27,14 +27,14 @@ const Login = () => {
         body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
-
       if (!response.ok) {
-        throw new Error(result.message || "Login failed");
+        const errorResult = await response.json();
+        throw new Error(errorResult.message || "Login failed");
       }
 
+      const result = await response.json();
       localStorage.setItem("token", result.token);
-      navigate("/dashboard"); // change to your protected route
+      navigate("/dashboard");
     } catch (err) {
       setError(err.message);
     }
