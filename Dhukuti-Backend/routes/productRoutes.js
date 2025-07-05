@@ -1,8 +1,9 @@
 const express = require("express");
 const Product = require("../models/Product");
-const { upload } = require("../middleware/upload");
+
 const verifyToken = require("../middleware/authMiddleware");
 const isAdmin = require("../middleware/isAdmin");
+const upload = require("../middleware/upload");
 
 const router = express.Router();
 
