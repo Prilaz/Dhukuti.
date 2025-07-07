@@ -1,5 +1,5 @@
-import express from "express";
-import multer from "multer";
+const express = require("express");
+const multer = require("multer");
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -10,9 +10,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post("/", upload.single("image"), (req, res) => {
-  res
-    .status(200)
-    .json({ url: `http://localhost:5000/uploads/${req.file.filename}` });
+  res.status(200).json({
+    url: `http://localhost:5000/uploads/${req.file.filename}`,
+  });
 });
 
-export default router;
+module.exports = router; // ✅ export in CommonJS
