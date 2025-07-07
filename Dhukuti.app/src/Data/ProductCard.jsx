@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link } from "react-router-dom";
+import { useCart } from "../context/CartContext"; // ✅ use the CartContext
 
 const modalStyle = {
   position: "fixed",
@@ -40,6 +41,7 @@ const overlayStyle = {
 const ProductCard = ({ product }) => {
   const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart(); // ✅ get from context
 
   const handleOpen = () => {
     setOpen(true);
@@ -51,32 +53,12 @@ const ProductCard = ({ product }) => {
   };
 
   const handleAddToCart = async () => {
-    const payload = {
-      userId: "user123",
-      productId: product.id,
-      title: product.title,
-      image: product.image,
-      price: product.price,
-      quantity,
-    };
-
     try {
-      const res = await fetch("http://localhost:5000/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        console.log("Added to cart");
-        handleClose();
-      } else {
-        console.error("Failed to add to cart");
-      }
+      await addToCart(product._id, quantity); // ✅ use _id, not id
+      console.log("Added to cart");
+      handleClose();
     } catch (err) {
-      console.error("Error:", err);
+      console.error("Failed to add to cart", err);
     }
   };
 

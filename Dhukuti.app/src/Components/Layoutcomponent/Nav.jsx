@@ -1,25 +1,38 @@
-import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Box, useTheme, IconButton } from "@mui/material";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
-import logo from "../../assets/Dhukuti.png"; // Adjust the path as necessary
+import {
+  Box,
+  useTheme,
+  IconButton,
+  Tooltip,
+  Menu,
+  MenuItem,
+} from "@mui/material";
+import { AccountCircle, Brightness4, Brightness7 } from "@mui/icons-material";
+import logo from "../../assets/Dhukuti.png";
 
 const Nav = ({ toggleTheme }) => {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
   const isDark = theme.palette.mode === "dark";
+
+  const navigate = useNavigate();
+  const location = useLocation();
   const collapseRef = useRef();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const cartItemCount = 0;
+  // Update login state when location changes (page reload, logout, etc.)
+  useEffect(() => {
+    setIsLoggedIn(!!localStorage.getItem("token"));
+  }, [location]);
 
-  const navItems = [
-    { to: "/", icon: "house-door", label: "Home" },
-    { to: "/shop", icon: "shop", label: "Shop" },
-    { to: "/artisans", icon: "people", label: "Artisans" },
-    { to: "/about", icon: "info-circle", label: "About" },
-  ];
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -37,6 +50,15 @@ const Nav = ({ toggleTheme }) => {
       bsCollapse.hide();
     }
   };
+
+  const navItems = [
+    { to: "/", icon: "house-door", label: "Home" },
+    { to: "/shop", icon: "shop", label: "Shop" },
+    { to: "/artisans", icon: "people", label: "Artisans" },
+    { to: "/about", icon: "info-circle", label: "About" },
+  ];
+
+  const cartItemCount = 0; // TODO: Replace with actual cart count from context
 
   return (
     <Box
@@ -58,6 +80,7 @@ const Nav = ({ toggleTheme }) => {
         } shadow-sm py-2 fixed-top`}
       >
         <div className="container-fluid d-flex justify-content-between align-items-center">
+          {/* Logo */}
           <Link to="/" className="navbar-brand d-flex align-items-center me-4">
             <img
               src={logo}
@@ -70,9 +93,9 @@ const Nav = ({ toggleTheme }) => {
               }}
               className="me-2"
             />
-            <span className="fw-bold fs-4 text-warning"></span>
           </Link>
 
+          {/* Toggle button for mobile */}
           <button
             className="navbar-toggler"
             type="button"
@@ -85,11 +108,13 @@ const Nav = ({ toggleTheme }) => {
             <span className="navbar-toggler-icon"></span>
           </button>
 
+          {/* Navbar content */}
           <div
             className="collapse navbar-collapse"
             id="mainNavbar"
             ref={collapseRef}
           >
+            {/* Left nav links */}
             <ul className="navbar-nav mx-lg-auto gap-lg-4 text-center ms-3 me-auto mb-2 mb-lg-0 d-flex align-items-center gap-2">
               {navItems.map((item) => (
                 <li className="nav-item" key={item.to}>
@@ -106,6 +131,7 @@ const Nav = ({ toggleTheme }) => {
               ))}
             </ul>
 
+            {/* Search, Theme, Cart, Login/Logout */}
             <form className="d-flex me-3" onSubmit={handleSearch}>
               <div className="input-group">
                 <input
@@ -129,7 +155,8 @@ const Nav = ({ toggleTheme }) => {
               </div>
             </form>
 
-            <div className="d-flex align-items-center ">
+            <div className="d-flex align-items-center">
+              {/* Theme toggle */}
               <IconButton
                 sx={{ mr: 2, color: isDark ? "white" : "inherit" }}
                 onClick={toggleTheme}
@@ -138,6 +165,7 @@ const Nav = ({ toggleTheme }) => {
                 {isDark ? <Brightness7 /> : <Brightness4 />}
               </IconButton>
 
+              {/* Cart link */}
               <Link
                 to="/cart"
                 className="btn btn-link position-relative me-3 p-0"
@@ -151,13 +179,53 @@ const Nav = ({ toggleTheme }) => {
                 )}
               </Link>
 
-              <Link
-                to="/login"
-                className="btn btn-outline-warning pr-3"
-                onClick={closeNavbar}
-              >
-                Login
-              </Link>
+              {/* ✅ Login/Logout toggle */}
+              {/* ✅ User Dropdown Icon */}
+              <Box>
+                <Tooltip title="Account">
+                  <IconButton
+                    onClick={(e) => setAnchorEl(e.currentTarget)}
+                    sx={{ color: isDark ? "white" : "black" }}
+                  >
+                    <AccountCircle fontSize="large" />
+                  </IconButton>
+                </Tooltip>
+
+                <Menu
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={() => setAnchorEl(null)}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "right",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                  }}
+                >
+                  {!isLoggedIn ? (
+                    <MenuItem
+                      onClick={() => {
+                        setAnchorEl(null);
+                        closeNavbar();
+                        navigate("/login");
+                      }}
+                    >
+                      Login
+                    </MenuItem>
+                  ) : (
+                    <MenuItem
+                      onClick={() => {
+                        setAnchorEl(null);
+                        handleLogout();
+                      }}
+                    >
+                      Logout
+                    </MenuItem>
+                  )}
+                </Menu>
+              </Box>
             </div>
           </div>
         </div>
