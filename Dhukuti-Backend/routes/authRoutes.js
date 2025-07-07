@@ -1,45 +1,93 @@
 const express = require("express");
 const router = express.Router();
-const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
-// POST /api/login
-router.post("/login", async (req, res) => {
-  const { email, password } = req.body;
+// ✅ POST /api/signup – Register a new user
+router.post("/signup", async (req, res) => {
+  const { name, email, password, role } = req.body;
 
   try {
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(400).json({ message: "Invalid email or password" });
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: "Email already registered" });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
+    // Hash password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    if (!isMatch) {
-      return res.status(400).json({ message: "Invalid email or password" });
-    }
+    // Create and save new user
+    const newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role: role || "user", // default role is 'user'
+    });
 
-    // ✅ FIXED: Include role in the token
+    await newUser.save();
+
+    // Generate JWT
     const token = jwt.sign(
-      { id: user._id, role: user.role }, // ✅ Include role here
+      { id: newUser._id, role: newUser.role },
       process.env.JWT_SECRET || "yourSecretKey",
       { expiresIn: "1d" }
     );
 
-    // ✅ FIXED: Return role to frontend
+    // Send response
+    res.status(201).json({
+      token,
+      user: {
+        id: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      },
+    });
+  } catch (err) {
+    console.error("Signup error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// ✅ POST /api/login – Authenticate user
+router.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    // Find user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    // Compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid email or password" });
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET || "yourSecretKey",
+      { expiresIn: "1d" }
+    );
+
+    // Send response
     res.status(200).json({
       token,
       user: {
         id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role, // ✅ Include role here too
+        role: user.role,
       },
     });
   } catch (err) {
-    console.error(err);
+    console.error("Login error:", err);
     res.status(500).json({ message: "Server error" });
   }
 });

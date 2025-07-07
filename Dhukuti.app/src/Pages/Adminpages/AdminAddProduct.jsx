@@ -41,12 +41,22 @@ const AdminAddProduct = () => {
     });
 
     try {
+      const token = localStorage.getItem("token"); // ✅ get token from storage
+
       const res = await fetch("http://localhost:5000/api/products", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`, // ✅ send token in header
+        },
         body,
       });
+
       const data = await res.json();
-      alert("✅ Product Added: " + data.product.title);
+      if (res.ok) {
+        alert("✅ Product Added: " + data.product.title);
+      } else {
+        throw new Error(data.message || "Failed to add product");
+      }
     } catch (error) {
       console.error("Product creation failed", error);
       alert("❌ Failed to add product");

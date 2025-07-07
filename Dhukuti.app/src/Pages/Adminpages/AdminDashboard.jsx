@@ -9,6 +9,7 @@ import {
   Typography,
   Toolbar,
   AppBar,
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
@@ -16,6 +17,11 @@ const drawerWidth = 240;
 
 const AdminDashboard = ({ children }) => {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token"); // ✅ Clear token
+    navigate("/login"); // ✅ Go to login page
+  };
 
   const menuItems = [
     { text: "Products", path: "/admin/products" },
@@ -26,13 +32,34 @@ const AdminDashboard = ({ children }) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar position="fixed" sx={{ zIndex: 1201 }}>
-        <Toolbar>
+      {/* ✅ Top AppBar with Logout */}
+      <AppBar
+        position="fixed"
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          bgcolor: "#ffeb3b", // bright yellow
+          color: "#000", // black text for contrast
+        }}
+      >
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6" noWrap component="div">
             Dhukuti Admin
           </Typography>
+          <Button
+            onClick={handleLogout}
+            sx={{
+              color: "#000",
+              "&:hover": {
+                backgroundColor: "#fff176", // light yellow hover effect
+              },
+            }}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </AppBar>
+
+      {/* ✅ Sidebar Drawer */}
       <Drawer
         variant="permanent"
         sx={{
@@ -60,6 +87,8 @@ const AdminDashboard = ({ children }) => {
           </List>
         </Box>
       </Drawer>
+
+      {/* ✅ Main content */}
       <Box
         component="main"
         sx={{
