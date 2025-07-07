@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode"; // ✅ Named import
 import logo from "../assets/Dhukuti.png";
 
 const Login = () => {
@@ -19,7 +20,7 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch("http://localhost:5000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -33,8 +34,20 @@ const Login = () => {
       }
 
       const result = await response.json();
+
+      // ✅ Save JWT token to localStorage
       localStorage.setItem("token", result.token);
-      navigate("/dashboard");
+
+      // ✅ Decode token to get user role
+      const decoded = jwtDecode(result.token);
+      const userRole = decoded.role;
+
+      // ✅ Redirect based on role
+      if (userRole === "admin") {
+        navigate("/admin/products");
+      } else {
+        navigate("/"); // Home or user dashboard
+      }
     } catch (err) {
       setError(err.message);
     }
