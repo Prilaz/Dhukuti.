@@ -1,9 +1,9 @@
+// middleware/authMiddleware.js
 const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
     return res
       .status(401)
@@ -14,23 +14,18 @@ const verifyToken = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // ✅ Now fetch full user from database
     const user = await User.findById(decoded.id);
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
 
-    // ✅ Attach full user data to req.user
+    if (!user) return res.status(404).json({ message: "User not found" });
+
     req.user = {
       id: user._id,
       email: user.email,
-      role: user.role, // ✅ This makes isAdmin middleware work
+      role: user.role, // ✅ important
     };
 
     next();
   } catch (err) {
-    console.error("Token verification failed:", err);
     res.status(403).json({ message: "Invalid token" });
   }
 };
