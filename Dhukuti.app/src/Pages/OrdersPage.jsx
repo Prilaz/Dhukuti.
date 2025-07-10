@@ -5,18 +5,23 @@ const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
 
   const fetchOrders = async () => {
-    const res = await fetch("http://localhost:5000/api/orders", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    const data = await res.json();
-    setOrders(data);
-  };
+    try {
+      const res = await fetch("http://localhost:5000/api/orders", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
+      if (!res.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+
+      const data = await res.json();
+      setOrders(data);
+    } catch (err) {
+      console.error("❌ Error fetching orders:", err.message);
+    }
+  };
 
   return (
     <Box sx={{ p: 4 }}>
@@ -34,7 +39,11 @@ const OrdersPage = () => {
                 .map((item) => `${item.productId.title} (x${item.quantity})`)
                 .join(", ")}
             </Typography>
-            <Typography>Shipping: {order.shippingAddress}</Typography>
+            <Typography>
+              Shipping: {order.shippingAddress?.address},{" "}
+              {order.shippingAddress?.city}
+            </Typography>
+
             <Typography>
               Date: {new Date(order.createdAt).toLocaleDateString()}
             </Typography>
