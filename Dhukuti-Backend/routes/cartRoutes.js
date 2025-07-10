@@ -5,7 +5,7 @@ const verifyToken = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.get("/", verifyToken, async (req, res) => {
-  const cart = await Cart.findOne({ userId: req.user.id }).populate(
+  const cart = await Cart.findOne({ user: req.user.id }).populate(
     "items.productId"
   );
   res.json(cart || { items: [] });
@@ -14,9 +14,9 @@ router.get("/", verifyToken, async (req, res) => {
 router.post("/add", verifyToken, async (req, res) => {
   const { productId, quantity } = req.body;
 
-  let cart = await Cart.findOne({ userId: req.user.id });
+  let cart = await Cart.findOne({ user: req.user.id });
   if (!cart) {
-    cart = new Cart({ userId: req.user.id, items: [] });
+    cart = new Cart({ user: req.user.id, items: [] });
   }
 
   const existingItem = cart.items.find(
@@ -34,7 +34,7 @@ router.post("/add", verifyToken, async (req, res) => {
 
 router.post("/remove", verifyToken, async (req, res) => {
   const { productId } = req.body;
-  const cart = await Cart.findOne({ userId: req.user.id });
+  const cart = await Cart.findOne({ user: req.user.id });
   if (cart) {
     cart.items = cart.items.filter(
       (item) => item.productId.toString() !== productId
@@ -44,6 +44,20 @@ router.post("/remove", verifyToken, async (req, res) => {
   } else {
     res.status(404).json({ message: "Cart not found" });
   }
+});
+
+router.delete("/remove/:productId", verifyToken, async (req, res) => {
+  console.log("DELETE called", req.params.productId);
+
+  const cart = await Cart.findOne({ user: req.user.id });
+  if (!cart) return res.status(404).json({ message: "Cart not found" });
+
+  cart.items = cart.items.filter(
+    (item) => item.productId.toString() !== req.params.productId
+  );
+  await cart.save();
+
+  res.status(200).json({ message: "Deleted", cart });
 });
 
 module.exports = router;
