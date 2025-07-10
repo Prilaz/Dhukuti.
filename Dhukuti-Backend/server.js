@@ -30,6 +30,7 @@ app.use("/api/upload", uploadRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
+app.use("/api/payments", require("./routes/paymentRoutes"));
 
 // Global error handler middleware (optional, but recommended)
 app.use((err, req, res, next) => {
