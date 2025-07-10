@@ -14,6 +14,8 @@ import AdminProductList from "./Pages/Adminpages/AdminProductList";
 import AdminProductForm from "./Pages/AdminProductForm";
 import AdminRoute from "./middleware/AdminRoute"; // ✅ middleware to protect admin pages
 import AdminAddProduct from "./Pages/Adminpages/AdminAddProduct";
+import AdminOrders from "./Pages/Adminpages/AdminOrders";
+import OrderHistory from "./Pages/orderHistory";
 
 const MyRoutes = () => {
   return (
@@ -30,6 +32,7 @@ const MyRoutes = () => {
 
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="/orders" element={<OrderHistory />} />
 
         {/* ✅ Protected Admin Routes */}
         <Route
@@ -53,6 +56,14 @@ const MyRoutes = () => {
           element={
             <AdminRoute>
               <AdminProductForm />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path="admin/orders"
+          element={
+            <AdminRoute>
+              <AdminOrders />
             </AdminRoute>
           }
         />

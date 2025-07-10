@@ -17,7 +17,7 @@ import { useTheme } from "@mui/material/styles";
 const categories = [
   "Pashmina",
   "Woolen",
-  "Wooden Handicrafts",
+  "Wooden",
   "Ceramic",
   "Thangka Art",
   "Statue",

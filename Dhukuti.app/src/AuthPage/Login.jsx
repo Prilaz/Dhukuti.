@@ -40,6 +40,7 @@ const Login = () => {
 
       // ✅ Decode token to get user role
       const decoded = jwtDecode(result.token);
+      console.log(decoded.role);
       const userRole = decoded.role;
 
       // ✅ Redirect based on role

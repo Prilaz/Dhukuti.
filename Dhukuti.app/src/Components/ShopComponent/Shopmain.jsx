@@ -8,7 +8,7 @@ const Shopmain = ({ products }) => {
         <p>No products found</p>
       ) : (
         products.map((product) => (
-          <div className="col-md-4 mb-4" key={product.id}>
+          <div className="col-md-4 mb-4" key={product._id || product.id}>
             <ProductCard product={product} />
           </div>
         ))
