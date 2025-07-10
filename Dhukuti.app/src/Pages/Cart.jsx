@@ -4,7 +4,6 @@ import {
   Typography,
   IconButton,
   Button,
-  TextField,
   Divider,
   Card,
   CardContent,
@@ -18,18 +17,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 const CartPage = () => {
   const [cart, setCart] = useState([]);
-  const [paymentMethod, setPaymentMethod] = useState("cod"); // cash on delivery
+  const [paymentMethod, setPaymentMethod] = useState("cod");
   const [showConfirm, setShowConfirm] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
 
   const fetchCart = async () => {
-    if (typeof window === "undefined") return; // skip if not in browser
-
+    if (typeof window === "undefined") return;
     const token = localStorage.getItem("token");
-    if (!token) {
-      // maybe redirect to login or show message
-      return;
-    }
+    if (!token) return;
 
     const res = await fetch("http://localhost:5000/api/cart", {
       headers: {
@@ -74,7 +69,7 @@ const CartPage = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({ paymentMethod }), // cod or online
+        body: JSON.stringify({ paymentMethod }),
       });
 
       if (!res.ok) throw new Error("Failed to place order");
@@ -139,7 +134,6 @@ const CartPage = () => {
       <Divider sx={{ my: 2 }} />
       <Typography variant="h6">Total: Rs. {getTotal()}</Typography>
 
-      {/* Payment Method */}
       <Box sx={{ mt: 2 }}>
         <Typography variant="subtitle1">Select Payment Method:</Typography>
         <RadioGroup
@@ -152,11 +146,9 @@ const CartPage = () => {
             control={<Radio />}
             label="Cash on Delivery"
           />
-          {/* You can add online later */}
         </RadioGroup>
       </Box>
 
-      {/* Checkout Button */}
       <Button
         variant="contained"
         color="primary"
@@ -174,7 +166,7 @@ const CartPage = () => {
         Clear Cart
       </Button>
 
-      {/* Confirmation Modal */}
+      {/* ✅ Confirmation Modal */}
       <Modal open={showConfirm} onClose={() => setShowConfirm(false)}>
         <Box
           sx={{
@@ -192,14 +184,16 @@ const CartPage = () => {
           </Typography>
           <Divider sx={{ mb: 2 }} />
 
-          {cart.map((item) => (
-            <Box key={item.productId._id} sx={{ mb: 1 }}>
-              <Typography>
-                {item.productId.title} × {item.quantity} = Rs.{" "}
-                {item.quantity * item.productId.price}
-              </Typography>
-            </Box>
-          ))}
+          {cart
+            .filter((item) => item.productId)
+            .map((item) => (
+              <Box key={item.productId._id} sx={{ mb: 1 }}>
+                <Typography>
+                  {item.productId.title} × {item.quantity} = Rs.{" "}
+                  {item.quantity * item.productId.price}
+                </Typography>
+              </Box>
+            ))}
 
           <Divider sx={{ my: 2 }} />
           <Typography variant="h6">Total: Rs. {getTotal()}</Typography>
@@ -220,7 +214,7 @@ const CartPage = () => {
         </Box>
       </Modal>
 
-      {/* Success Animation Modal */}
+      {/* ✅ Success Animation Modal */}
       <Modal open={orderSuccess}>
         <Box
           sx={{

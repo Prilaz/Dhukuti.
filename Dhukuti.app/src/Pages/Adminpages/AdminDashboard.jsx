@@ -12,6 +12,7 @@ import {
   Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import logo from "../../assets/Dhukuti.png";
 
 const drawerWidth = 240;
 
@@ -26,11 +27,11 @@ const AdminDashboard = ({ children }) => {
   const menuItems = [
     { text: "Products", path: "/admin/products" },
     { text: "Add Product", path: "/admin/products/add" },
-    { text: "Team Members", path: "/admin/about/team" },
-    { text: "Gallery", path: "/admin/about/gallery" },
+    //{ text: "Team Members", path: "/admin/about/team" },
+    //{ text: "Gallery", path: "/admin/about/gallery" },
     { text: "Orders", path: "/admin/orders" },
     { text: "Users", path: "/admin/users" },
-    { text: "Settings", path: "/admin/settings" },
+    //{ text: "Settings", path: "/admin/settings" },
   ];
 
   return (
@@ -40,20 +41,30 @@ const AdminDashboard = ({ children }) => {
         position="fixed"
         sx={{
           zIndex: (theme) => theme.zIndex.drawer + 1,
-          bgcolor: "#ffeb3b", // bright yellow
-          color: "#000", // black text for contrast
+          bgcolor: "#fff",
+          color: "#000",
         }}
       >
         <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6" noWrap component="div">
-            Dhukuti Admin
+            <img
+              src={logo}
+              alt="Dhukuti Logo"
+              style={{
+                height: "50px",
+                width: "auto",
+                marginTop: "10px",
+                marginLeft: "20px",
+              }}
+              className="me-2"
+            />
           </Typography>
           <Button
             onClick={handleLogout}
             sx={{
               color: "#000",
               "&:hover": {
-                backgroundColor: "#fff176", // light yellow hover effect
+                backgroundColor: "#d6a829", // light yellow hover effect
               },
             }}
           >
@@ -91,7 +102,6 @@ const AdminDashboard = ({ children }) => {
         </Box>
       </Drawer>
 
-      {/* ✅ Main content */}
       <Box
         component="main"
         sx={{

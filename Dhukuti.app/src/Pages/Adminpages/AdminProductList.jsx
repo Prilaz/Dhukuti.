@@ -122,7 +122,7 @@ const AdminProductList = () => {
 
   return (
     <AdminDashboard>
-      <Box sx={{ p: 2 }}>
+      <Box sx={{ p: 1 }}>
         <Typography variant="h5" gutterBottom>
           Product List
         </Typography>
@@ -156,7 +156,7 @@ const AdminProductList = () => {
                       />
                     </TableCell>
                     <TableCell>{product.title}</TableCell>
-                    <TableCell>${product.price}</TableCell>
+                    <TableCell>Rs.{product.price}</TableCell>
                     <TableCell>{product.category}</TableCell>
                     <TableCell align="right">
                       <IconButton
