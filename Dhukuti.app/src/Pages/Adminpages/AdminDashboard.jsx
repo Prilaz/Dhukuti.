@@ -28,6 +28,9 @@ const AdminDashboard = ({ children }) => {
     { text: "Add Product", path: "/admin/products/add" },
     { text: "Team Members", path: "/admin/about/team" },
     { text: "Gallery", path: "/admin/about/gallery" },
+    { text: "Orders", path: "/admin/orders" },
+    { text: "Users", path: "/admin/users" },
+    { text: "Settings", path: "/admin/settings" },
   ];
 
   return (
