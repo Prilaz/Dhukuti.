@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import logo from "../../assets/Dhukuti.png";
+import { Outlet } from "react-router-dom"; // 👈 add this at the top
 
 const drawerWidth = 240;
 
@@ -25,6 +26,7 @@ const AdminDashboard = ({ children }) => {
   };
 
   const menuItems = [
+    { text: "Dashboard", path: "/admin" },
     { text: "Products", path: "/admin/products" },
     { text: "Add Product", path: "/admin/products/add" },
     //{ text: "Team Members", path: "/admin/about/team" },
@@ -112,7 +114,7 @@ const AdminDashboard = ({ children }) => {
           mt: 8,
         }}
       >
-        {children}
+        <Outlet />
       </Box>
     </Box>
   );

@@ -64,67 +64,65 @@ const AdminAddProduct = () => {
   };
 
   return (
-    <AdminDashboard>
-      <Paper elevation={4} sx={{ p: 4, maxWidth: 600, mx: "auto" }}>
-        <Typography variant="h5" gutterBottom>
-          Add New Product
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit}
-          sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+    <Paper elevation={4} sx={{ p: 4, maxWidth: 600, mx: "auto" }}>
+      <Typography variant="h5" gutterBottom>
+        Add New Product
+      </Typography>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      >
+        <TextField
+          name="title"
+          label="Product Title"
+          value={form.title}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          name="price"
+          label="Price"
+          type="number"
+          value={form.price}
+          onChange={handleChange}
+          required
+        />
+        <TextField
+          name="category"
+          label="Category"
+          value={form.category}
+          onChange={handleChange}
+          required
+        />
+
+        <InputLabel htmlFor="image">Product Image</InputLabel>
+        <input
+          name="image"
+          type="file"
+          accept="image/*"
+          onChange={handleChange}
+          required
+        />
+
+        {form.imagePreview && (
+          <Box
+            component="img"
+            src={form.imagePreview}
+            alt="Preview"
+            sx={{ width: "100%", mt: 2, borderRadius: 2 }}
+          />
+        )}
+
+        <Button
+          variant="contained"
+          type="submit"
+          sx={{ bgcolor: "#ffc107", color: "black", mt: 2 }}
         >
-          <TextField
-            name="title"
-            label="Product Title"
-            value={form.title}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            name="price"
-            label="Price"
-            type="number"
-            value={form.price}
-            onChange={handleChange}
-            required
-          />
-          <TextField
-            name="category"
-            label="Category"
-            value={form.category}
-            onChange={handleChange}
-            required
-          />
-
-          <InputLabel htmlFor="image">Product Image</InputLabel>
-          <input
-            name="image"
-            type="file"
-            accept="image/*"
-            onChange={handleChange}
-            required
-          />
-
-          {form.imagePreview && (
-            <Box
-              component="img"
-              src={form.imagePreview}
-              alt="Preview"
-              sx={{ width: "100%", mt: 2, borderRadius: 2 }}
-            />
-          )}
-
-          <Button
-            variant="contained"
-            type="submit"
-            sx={{ bgcolor: "#ffc107", color: "black", mt: 2 }}
-          >
-            Save Product
-          </Button>
-        </Box>
-      </Paper>
-    </AdminDashboard>
+          Save Product
+        </Button>
+      </Box>
+    </Paper>
   );
 };
 

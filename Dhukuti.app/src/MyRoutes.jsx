@@ -9,13 +9,12 @@ import CartPage from "./Pages/Cart";
 import Login from "./AuthPage/Login";
 import Register from "./AuthPage/Register";
 import ScrollToTop from "./Components/ScrollToTop";
-
+import AdminDashboard from "./Pages/Adminpages/AdminDashboard";
 import AdminProductList from "./Pages/Adminpages/AdminProductList";
-import AdminProductForm from "./Pages/AdminProductForm";
-import AdminRoute from "./middleware/AdminRoute"; // ✅ middleware to protect admin pages
 import AdminAddProduct from "./Pages/Adminpages/AdminAddProduct";
 import AdminOrders from "./Pages/Adminpages/AdminOrders";
-import OrderHistory from "./Pages/orderHistory";
+import AdminUsers from "./Pages/Adminpages/AdminUser";
+import AdminRoute from "./Pages/Adminpages/AdminRoute";
 
 const MyRoutes = () => {
   return (
@@ -32,41 +31,22 @@ const MyRoutes = () => {
 
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
-        <Route path="/orders" element={<OrderHistory />} />
 
         {/* ✅ Protected Admin Routes */}
         <Route
-          path="admin/products"
+          path="admin"
           element={
             <AdminRoute>
-              <AdminProductList />
+              <AdminDashboard />
             </AdminRoute>
           }
-        />
-        <Route
-          path="admin/products/add"
-          element={
-            <AdminRoute>
-              <AdminAddProduct />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="admin/products/edit/:id"
-          element={
-            <AdminRoute>
-              <AdminProductForm />
-            </AdminRoute>
-          }
-        />
-        <Route
-          path="admin/orders"
-          element={
-            <AdminRoute>
-              <AdminOrders />
-            </AdminRoute>
-          }
-        />
+        >
+          <Route path="products" element={<AdminProductList />} />
+          <Route path="products/add" element={<AdminAddProduct />} />
+
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="users" element={<AdminUsers />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

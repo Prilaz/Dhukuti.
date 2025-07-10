@@ -121,119 +121,117 @@ const AdminProductList = () => {
   }, []);
 
   return (
-    <AdminDashboard>
-      <Box sx={{ p: 1 }}>
-        <Typography variant="h5" gutterBottom>
-          Product List
-        </Typography>
-        {loading ? (
-          <CircularProgress />
-        ) : (
-          <TableContainer component={Paper}>
-            <Table>
-              <TableHead sx={{ backgroundColor: "#f0f0f0" }}>
-                <TableRow>
-                  <TableCell>Image</TableCell>
-                  <TableCell>Title</TableCell>
-                  <TableCell>Price</TableCell>
-                  <TableCell>Category</TableCell>
-                  <TableCell align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {products.map((product) => (
-                  <TableRow key={product._id}>
-                    <TableCell>
-                      <img
-                        src={`http://localhost:5000${product.image}`}
-                        alt={product.title}
-                        style={{
-                          width: 60,
-                          height: 60,
-                          objectFit: "cover",
-                          borderRadius: 8,
+    <Box sx={{ p: 1 }}>
+      <Typography variant="h5" gutterBottom>
+        Product List
+      </Typography>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead sx={{ backgroundColor: "#f0f0f0" }}>
+              <TableRow>
+                <TableCell>Image</TableCell>
+                <TableCell>Title</TableCell>
+                <TableCell>Price</TableCell>
+                <TableCell>Category</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {products.map((product) => (
+                <TableRow key={product._id}>
+                  <TableCell>
+                    <img
+                      src={`http://localhost:5000${product.image}`}
+                      alt={product.title}
+                      style={{
+                        width: 60,
+                        height: 60,
+                        objectFit: "cover",
+                        borderRadius: 8,
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>{product.title}</TableCell>
+                  <TableCell>Rs.{product.price}</TableCell>
+                  <TableCell>{product.category}</TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      color="primary"
+                      onClick={() => handleEditOpen(product)}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <Modal open={openEdit} onClose={handleEditClose}>
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          width: 400,
+                          bgcolor: "background.paper",
+                          boxShadow: 24,
+                          p: 4,
+                          borderRadius: 2,
                         }}
-                      />
-                    </TableCell>
-                    <TableCell>{product.title}</TableCell>
-                    <TableCell>Rs.{product.price}</TableCell>
-                    <TableCell>{product.category}</TableCell>
-                    <TableCell align="right">
-                      <IconButton
-                        color="primary"
-                        onClick={() => handleEditOpen(product)}
                       >
-                        <EditIcon />
-                      </IconButton>
-                      <Modal open={openEdit} onClose={handleEditClose}>
-                        <Box
-                          sx={{
-                            position: "absolute",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            width: 400,
-                            bgcolor: "background.paper",
-                            boxShadow: 24,
-                            p: 4,
-                            borderRadius: 2,
-                          }}
+                        <Typography variant="h6" mb={2}>
+                          Edit Product
+                        </Typography>
+                        <TextField
+                          fullWidth
+                          margin="normal"
+                          name="title"
+                          label="Title"
+                          value={currentProduct?.title || ""}
+                          onChange={handleEditChange}
+                        />
+                        <TextField
+                          fullWidth
+                          margin="normal"
+                          name="price"
+                          label="Price"
+                          type="number"
+                          value={currentProduct?.price || ""}
+                          onChange={handleEditChange}
+                        />
+                        <TextField
+                          fullWidth
+                          margin="normal"
+                          name="category"
+                          label="Category"
+                          value={currentProduct?.category || ""}
+                          onChange={handleEditChange}
+                        />
+                        <Button
+                          variant="contained"
+                          color="warning"
+                          fullWidth
+                          sx={{ mt: 2 }}
+                          onClick={handleEditSubmit}
                         >
-                          <Typography variant="h6" mb={2}>
-                            Edit Product
-                          </Typography>
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            name="title"
-                            label="Title"
-                            value={currentProduct?.title || ""}
-                            onChange={handleEditChange}
-                          />
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            name="price"
-                            label="Price"
-                            type="number"
-                            value={currentProduct?.price || ""}
-                            onChange={handleEditChange}
-                          />
-                          <TextField
-                            fullWidth
-                            margin="normal"
-                            name="category"
-                            label="Category"
-                            value={currentProduct?.category || ""}
-                            onChange={handleEditChange}
-                          />
-                          <Button
-                            variant="contained"
-                            color="warning"
-                            fullWidth
-                            sx={{ mt: 2 }}
-                            onClick={handleEditSubmit}
-                          >
-                            Save Changes
-                          </Button>
-                        </Box>
-                      </Modal>
+                          Save Changes
+                        </Button>
+                      </Box>
+                    </Modal>
 
-                      <IconButton
-                        color="error"
-                        onClick={() => deleteProduct(product._id)}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        )}
-      </Box>
-    </AdminDashboard>
+                    <IconButton
+                      color="error"
+                      onClick={() => deleteProduct(product._id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
+    </Box>
   );
 };
 
