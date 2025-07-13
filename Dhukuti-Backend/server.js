@@ -29,8 +29,11 @@ app.use("/api/cart", cartRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
-app.use("/api/orders", orderRoutes);
 app.use("/api/payments", require("./routes/paymentRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
+app.use("/api/orders", require("./routes/orderRoutes"));
+
+app.use(express.json());
 
 // Global error handler middleware (optional, but recommended)
 app.use((err, req, res, next) => {

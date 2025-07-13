@@ -6,10 +6,13 @@ import {
   useTheme,
   IconButton,
   Tooltip,
-  Menu,
-  MenuItem,
+  Paper,
+  ClickAwayListener,
+  Typography,
 } from "@mui/material";
 import { AccountCircle, Brightness4, Brightness7 } from "@mui/icons-material";
+import { jwtDecode } from "jwt-decode"; // Correct default import
+
 import logo from "../../assets/Dhukuti.png";
 
 const Nav = ({ toggleTheme }) => {
@@ -21,16 +24,36 @@ const Nav = ({ toggleTheme }) => {
   const collapseRef = useRef();
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
-  const [anchorEl, setAnchorEl] = useState(null);
 
-  // Update login state when location changes (page reload, logout, etc.)
+  // State to toggle profile card visibility
+  const [showProfileCard, setShowProfileCard] = useState(false);
+  const profileRef = useRef(null);
+
+  const [userData, setUserData] = useState(null);
+
   useEffect(() => {
-    setIsLoggedIn(!!localStorage.getItem("token"));
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        console.log("Decoded token:", decoded);
+        setUserData(decoded.user || decoded);
+        setIsLoggedIn(true);
+      } catch {
+        setUserData(null);
+        setIsLoggedIn(false);
+      }
+    } else {
+      setUserData(null);
+      setIsLoggedIn(false);
+    }
   }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
+    setUserData(null);
+    setShowProfileCard(false);
     navigate("/login");
   };
 
@@ -131,7 +154,7 @@ const Nav = ({ toggleTheme }) => {
               ))}
             </ul>
 
-            {/* Search, Theme, Cart, Login/Logout */}
+            {/* Search, Theme, Cart, Profile */}
             <form className="d-flex me-3" onSubmit={handleSearch}>
               <div className="input-group">
                 <input
@@ -155,7 +178,7 @@ const Nav = ({ toggleTheme }) => {
               </div>
             </form>
 
-            <div className="d-flex align-items-center">
+            <div className="d-flex align-items-center position-relative">
               {/* Theme toggle */}
               <IconButton
                 sx={{ mr: 2, color: isDark ? "white" : "inherit" }}
@@ -179,53 +202,90 @@ const Nav = ({ toggleTheme }) => {
                 )}
               </Link>
 
-              {/* ✅ Login/Logout toggle */}
-              {/* ✅ User Dropdown Icon */}
-              <Box>
+              {/* Profile icon button with toggle card */}
+              {isLoggedIn && userData ? (
+                <ClickAwayListener
+                  onClickAway={() => setShowProfileCard(false)}
+                >
+                  <Box sx={{ position: "relative" }}>
+                    <Tooltip title="Account">
+                      <IconButton
+                        onClick={() => setShowProfileCard((prev) => !prev)}
+                        sx={{ color: isDark ? "white" : "black" }}
+                        aria-haspopup="true"
+                        aria-expanded={showProfileCard ? "true" : undefined}
+                        aria-label="User account"
+                      >
+                        <AccountCircle fontSize="large" />
+                      </IconButton>
+                    </Tooltip>
+
+                    {showProfileCard && (
+                      <Paper
+                        elevation={3}
+                        sx={{
+                          position: "absolute",
+                          top: "60px",
+                          right: 0,
+                          width: 220,
+                          bgcolor: isDark ? "#333" : "#fff",
+                          color: isDark ? "#fff" : "#000",
+                          borderRadius: 2,
+                          p: 2,
+                          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+                          zIndex: 9999,
+                        }}
+                      >
+                        <Typography
+                          variant="subtitle1"
+                          fontWeight="bold"
+                          noWrap
+                        >
+                          {userData?.name || "User"}
+                        </Typography>
+                        <Typography variant="body2" sx={{ mb: 1 }} noWrap>
+                          {userData?.email || ""}
+                        </Typography>
+                        <Link
+                          to="/profile"
+                          className="text-decoration-none"
+                          onClick={() => {
+                            setShowProfileCard(false);
+                            closeNavbar();
+                          }}
+                        />
+                        <Box
+                          component="button"
+                          onClick={handleLogout}
+                          sx={{
+                            cursor: "pointer",
+                            color: isDark ? "#f44336" : "#d32f2f",
+                            background: "transparent",
+                            border: "none",
+                            p: 0,
+                            fontWeight: "bold",
+                            "&:hover": {
+                              textDecoration: "underline",
+                            },
+                          }}
+                        >
+                          Logout
+                        </Box>
+                      </Paper>
+                    )}
+                  </Box>
+                </ClickAwayListener>
+              ) : (
                 <Tooltip title="Account">
                   <IconButton
-                    onClick={(e) => setAnchorEl(e.currentTarget)}
+                    onClick={() => navigate("/login")}
                     sx={{ color: isDark ? "white" : "black" }}
+                    aria-label="Login"
                   >
                     <AccountCircle fontSize="large" />
                   </IconButton>
                 </Tooltip>
-
-                <Menu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={() => setAnchorEl(null)}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "right",
-                  }}
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                >
-                  {!isLoggedIn ? (
-                    <MenuItem
-                      onClick={() => {
-                        setAnchorEl(null);
-                        closeNavbar();
-                        navigate("/login");
-                      }}
-                    >
-                      Login
-                    </MenuItem>
-                  ) : (
-                    <MenuItem
-                      onClick={() => {
-                        setAnchorEl(null);
-                        handleLogout();
-                      }}
-                    >
-                      Logout
-                    </MenuItem>
-                  )}
-                </Menu>
-              </Box>
+              )}
             </div>
           </div>
         </div>
