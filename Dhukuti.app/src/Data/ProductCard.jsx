@@ -56,10 +56,11 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = async () => {
     try {
       await addToCart(product._id, quantity);
-      console.log("Added to cart");
+      alert("Product added to cart!");
       handleClose();
     } catch (err) {
-      console.error("Failed to add to cart", err);
+      console.error("Add to cart error:", err);
+      alert("Something went wrong.");
     }
   };
 

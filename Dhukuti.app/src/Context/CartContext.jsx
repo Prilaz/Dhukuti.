@@ -5,9 +5,9 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
-  const token = localStorage.getItem("token"); // get token from localStorage
-
   const fetchCart = async () => {
+    const token = localStorage.getItem("token"); // ✅ move inside
+    if (!token) return;
     const res = await fetch("http://localhost:5000/api/cart", {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -18,6 +18,8 @@ export const CartProvider = ({ children }) => {
   };
 
   const addToCart = async (productId, quantity = 1) => {
+    const token = localStorage.getItem("token"); // ✅ move inside
+    if (!token) return alert("Please login");
     await fetch("http://localhost:5000/api/cart/add", {
       method: "POST",
       headers: {
@@ -26,10 +28,12 @@ export const CartProvider = ({ children }) => {
       },
       body: JSON.stringify({ productId, quantity }),
     });
-    fetchCart();
+    fetchCart(); // ✅ refresh cart after add
   };
 
   const removeFromCart = async (productId) => {
+    const token = localStorage.getItem("token"); // ✅ move inside
+    if (!token) return;
     await fetch(`http://localhost:5000/api/cart/remove/${productId}`, {
       method: "DELETE",
       headers: {

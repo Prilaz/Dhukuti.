@@ -12,6 +12,7 @@ import {
   FormControlLabel,
   Modal,
   CircularProgress,
+  TextField,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 
@@ -20,6 +21,9 @@ const CartPage = () => {
   const [paymentMethod, setPaymentMethod] = useState("cod");
   const [showConfirm, setShowConfirm] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState(false);
+  const [address, setAddress] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const fetchCart = async () => {
     if (typeof window === "undefined") return;
@@ -44,47 +48,89 @@ const CartPage = () => {
     });
     fetchCart();
   };
+  const handleConfirmOrder = async () => {
+    if (!address || !contactNumber) {
+      alert("Please fill in address and contact number.");
+      return;
+    }
+
+    const token = localStorage.getItem("token");
+    if (!token) return alert("Not logged in");
+
+    const orderData = {
+      items: cart
+        .filter((item) => item.productId && item.productId._id) // ✅ Filter out invalid items
+        .map((item) => ({
+          productId: item.productId._id,
+          quantity: item.quantity,
+        })),
+      total: getTotal(),
+      address,
+      contactNumber,
+      paymentMethod,
+    };
+    try {
+      setLoading(true);
+      const res = await fetch("http://localhost:5000/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (res.ok) {
+        setShowConfirm(false);
+        setOrderSuccess(true);
+        clearCart();
+      } else {
+        const data = await res.json();
+        alert(data.message || "Order failed");
+      }
+    } catch (err) {
+      console.error("Error placing order:", err);
+      alert("Something went wrong!");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const clearCart = async () => {
-    await fetch("http://localhost:5000/api/cart/clear", {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    fetchCart();
+    try {
+      const res = await fetch("http://localhost:5000/api/cart/clear", {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+
+      const contentType = res.headers.get("content-type");
+      if (!contentType || !contentType.includes("application/json")) {
+        const text = await res.text();
+        throw new Error(`Unexpected response: ${text}`);
+      }
+
+      const data = await res.json();
+
+      if (res.ok) {
+        fetchCart();
+      } else {
+        alert(data.message || "Failed to clear cart");
+      }
+    } catch (err) {
+      console.error("Error clearing cart:", err);
+      alert("Failed to clear cart");
+    }
   };
+
+  const isContactValid = contactNumber.length === 10;
 
   const getTotal = () =>
     cart.reduce((total, item) => {
       if (!item.productId) return total;
       return total + item.quantity * item.productId.price;
     }, 0);
-
-  const handleConfirmOrder = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ paymentMethod }),
-      });
-
-      if (!res.ok) throw new Error("Failed to place order");
-
-      setShowConfirm(false);
-      setOrderSuccess(true);
-
-      setTimeout(() => {
-        setOrderSuccess(false);
-        setCart([]);
-      }, 3000);
-    } catch (err) {
-      alert("Order failed: " + err.message);
-    }
-  };
 
   useEffect(() => {
     fetchCart();
@@ -96,7 +142,6 @@ const CartPage = () => {
         Your Cart
       </Typography>
       <Divider sx={{ mb: 2 }} />
-
       {cart.length === 0 ? (
         <Typography>Your cart is empty.</Typography>
       ) : (
@@ -130,10 +175,42 @@ const CartPage = () => {
             </Card>
           ))
       )}
-
       <Divider sx={{ my: 2 }} />
       <Typography variant="h6">Total: Rs. {getTotal()}</Typography>
+      <Box sx={{ mt: 2 }}>
+        <Typography variant="subtitle1">Delivery Address:</Typography>
+        <TextField
+          fullWidth
+          multiline
+          rows={3}
+          value={address}
+          onChange={(e) => setAddress(e.target.value)}
+          placeholder="Enter your delivery address"
+          sx={{ my: 1 }}
+        />
 
+        <Typography variant="subtitle1">Contact Number:</Typography>
+        <TextField
+          fullWidth
+          value={contactNumber}
+          onChange={(e) => {
+            const value = e.target.value;
+            const digitsOnly = value.replace(/\D/g, "");
+            if (digitsOnly.length <= 10) {
+              setContactNumber(digitsOnly);
+            }
+          }}
+          placeholder="Enter your contact number"
+          sx={{ my: 1 }}
+          inputProps={{ maxLength: 10 }}
+          error={!isContactValid && contactNumber.length > 0}
+          helperText={
+            !isContactValid && contactNumber.length > 0
+              ? "Contact number must be 10 digits."
+              : ""
+          }
+        />
+      </Box>
       <Box sx={{ mt: 2 }}>
         <Typography variant="subtitle1">Select Payment Method:</Typography>
         <RadioGroup
@@ -146,6 +223,8 @@ const CartPage = () => {
             control={<Radio />}
             label="Cash on Delivery"
           />
+          <FormControlLabel value="esewa" control={<Radio />} label="eSewa" />
+          <FormControlLabel value="khalti" control={<Radio />} label="Khalti" />
         </RadioGroup>
       </Box>
 
@@ -165,7 +244,6 @@ const CartPage = () => {
       >
         Clear Cart
       </Button>
-
       {/* ✅ Confirmation Modal */}
       <Modal open={showConfirm} onClose={() => setShowConfirm(false)}>
         <Box
@@ -208,13 +286,11 @@ const CartPage = () => {
               color="success"
               onClick={handleConfirmOrder}
             >
-              Confirm Order
+              {loading ? "Placing..." : "Confirm Order"}
             </Button>
           </Box>
         </Box>
       </Modal>
-
-      {/* ✅ Success Animation Modal */}
       <Modal open={orderSuccess}>
         <Box
           sx={{
