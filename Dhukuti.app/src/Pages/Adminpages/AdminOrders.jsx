@@ -8,6 +8,7 @@ import {
   Paper,
   Typography,
   TableContainer,
+  Button,
 } from "@mui/material";
 
 const AdminOrders = () => {
@@ -79,61 +80,93 @@ const AdminOrders = () => {
                   {new Date(order.createdAt).toLocaleString()}
                 </TableCell>
                 <TableCell>
-                  {order.status === "pending" ? (
-                    <button
-                      style={{
-                        backgroundColor: "#1976d2",
-                        color: "white",
-                        border: "none",
-                        padding: "5px 10px",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                      }}
-                      onClick={async () => {
-                        const confirm = window.confirm(
-                          "Mark this order as 'On its way'?"
-                        );
-                        if (!confirm) return;
+                  <Button
+                    onClick={async () => {
+                      const confirm = window.confirm(
+                        "Mark this order as 'On its way'?"
+                      );
+                      if (!confirm) return;
 
-                        try {
-                          const res = await fetch(
-                            `http://localhost:5000/api/orders/${order._id}/status`,
-                            {
-                              method: "PUT",
-                              headers: {
-                                "Content-Type": "application/json",
-                                Authorization: `Bearer ${localStorage.getItem(
-                                  "token"
-                                )}`,
-                              },
-                            }
-                          );
-                          if (res.ok) {
-                            alert("Order marked as 'On its way'");
-                            // Re-fetch orders
-                            setOrders((prev) =>
-                              prev.map((o) =>
-                                o._id === order._id
-                                  ? { ...o, status: "shipped" }
-                                  : o
-                              )
-                            );
-                          } else {
-                            alert("Failed to update order");
+                      try {
+                        const res = await fetch(
+                          `http://localhost:5000/api/orders/${order._id}/mark-on-way`,
+                          {
+                            method: "PUT",
+                            headers: {
+                              "Content-Type": "application/json",
+                              Authorization: `Bearer ${localStorage.getItem(
+                                "token"
+                              )}`,
+                            },
                           }
-                        } catch (err) {
-                          console.error("Update error", err);
-                          alert("Error updating order");
+                        );
+                        if (res.ok) {
+                          alert("Order status updated!");
+                          setOrders((prev) =>
+                            prev.map((o) =>
+                              o._id === order._id
+                                ? { ...o, status: "on its way" }
+                                : o
+                            )
+                          );
                         }
-                      }}
-                    >
-                      On its Way
-                    </button>
-                  ) : (
-                    <Typography variant="body2" color="success.main">
-                      {order.status}
-                    </Typography>
-                  )}
+                      } catch (err) {
+                        console.error(err);
+                        alert("Error updating order");
+                      }
+                    }}
+                    style={{
+                      marginRight: 8,
+                      padding: "5px 10px",
+                      backgroundColor: "#1976d2",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    On its Way
+                  </Button>
+
+                  <Button
+                    onClick={async () => {
+                      const confirm = window.confirm(
+                        "Mark this order as completed and remove?"
+                      );
+                      if (!confirm) return;
+
+                      try {
+                        const res = await fetch(
+                          `http://localhost:5000/api/orders/${order._id}`,
+                          {
+                            method: "DELETE",
+                            headers: {
+                              Authorization: `Bearer ${localStorage.getItem(
+                                "token"
+                              )}`,
+                            },
+                          }
+                        );
+                        if (res.ok) {
+                          alert("Order removed");
+                          setOrders((prev) =>
+                            prev.filter((o) => o._id !== order._id)
+                          );
+                        }
+                      } catch (err) {
+                        console.error(err);
+                        alert("Error deleting order");
+                      }
+                    }}
+                    style={{
+                      padding: "5px 10px",
+                      backgroundColor: "#d32f2f",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "4px",
+                    }}
+                  >
+                    Completed
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

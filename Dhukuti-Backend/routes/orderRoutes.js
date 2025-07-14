@@ -1,70 +1,82 @@
 const express = require("express");
-const Order = require("../models/Order");
-const Cart = require("../models/Cart");
-const verifyToken = require("../middleware/authMiddleware");
-const sendOrderEmail = require("../utils/sendOrderEmail"); // Make sure this exists
-
 const router = express.Router();
 
-router.post("/", verifyToken, async (req, res) => {
+const authMiddleware = require("../middleware/authMiddleware"); // your JWT auth middleware
+const isAdmin = require("../middleware/isAdmin");
+const Order = require("../models/Order");
+
+// POST create order
+router.post("/", authMiddleware, async (req, res) => {
   try {
-    const userId = req.user.id;
-    const { paymentMethod } = req.body;
+    const { items, total, address, contactNumber, paymentMethod } = req.body;
+    const userId = req.user._id;
 
-    console.log("➡️ Order Attempt from:", req.user.email);
-    console.log("➡️ Payment Method:", paymentMethod);
-
-    if (!["cod", "online"].includes(paymentMethod)) {
-      return res.status(400).json({ message: "Invalid payment method" });
+    if (
+      !items ||
+      !items.length ||
+      !total ||
+      !address ||
+      !contactNumber ||
+      !paymentMethod
+    ) {
+      return res.status(400).json({ message: "Missing order data" });
     }
 
-    const cart = await Cart.findOne({ userId }).populate("items.productId");
-
-    if (!cart || cart.items.length === 0) {
-      return res.status(400).json({ message: "Cart is empty" });
-    }
-
-    console.log("🧾 CART FOUND:", JSON.stringify(cart, null, 2));
-
-    // Filter out any cart items with missing/deleted products
-    const validItems = cart.items.filter((item) => item.productId);
-
-    if (validItems.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "All items in your cart are invalid or removed" });
-    }
-
-    const total = validItems.reduce((sum, item) => {
-      const price = item.productId?.price || 0;
-      return sum + item.quantity * price;
-    }, 0);
-
-    const order = new Order({
+    const newOrder = new Order({
       userId,
-      items: validItems,
+      items,
       total,
+      address,
+      contactNumber,
       paymentMethod,
     });
 
+    const savedOrder = await newOrder.save();
+    res.status(201).json(savedOrder);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error placing order" });
+  }
+});
+
+// GET all orders (admin only)
+router.get("/admin", authMiddleware, isAdmin, async (req, res) => {
+  try {
+    // Get all orders, populate product and user info
+    const orders = await Order.find()
+      .populate("items.productId", "title price image")
+      .populate("userId", "email name");
+
+    res.json(orders);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error fetching orders" });
+  }
+});
+
+router.put("/:id/mark-on-way", authMiddleware, isAdmin, async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+
+    order.status = "on its way";
     await order.save();
 
-    // Clear the cart
-    cart.items = [];
-    await cart.save();
+    res.json({ message: "Order updated to 'on its way'" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update order status" });
+  }
+});
 
-    // Optional email
-    try {
-      await sendOrderEmail(req.user.email, order);
-    } catch (emailErr) {
-      console.warn("📧 Email send failed:", emailErr.message);
-    }
-
-    console.log("✅ Order placed successfully");
-    res.status(201).json({ message: "Order placed", order });
+// DELETE /api/orders/:id (admin only)
+router.delete("/:id", authMiddleware, isAdmin, async (req, res) => {
+  try {
+    const order = await Order.findByIdAndDelete(req.params.id);
+    if (!order) return res.status(404).json({ message: "Order not found" });
+    res.json({ message: "Order deleted successfully" });
   } catch (error) {
-    console.error("🔥 Order route crashed:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    console.error("Error deleting order:", error);
+    res.status(500).json({ message: "Failed to delete order" });
   }
 });
 
