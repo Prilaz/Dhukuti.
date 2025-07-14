@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import {
   Table,
   TableHead,
@@ -18,10 +17,20 @@ const AdminOrders = () => {
     const fetchOrders = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/orders", {
-          headers: { Authorization: `Bearer ${token}` },
+        const res = await fetch("http://localhost:5000/api/orders/admin", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-        setOrders(res.data);
+
+        if (!res.ok) {
+          const errorDetail = await res.text();
+          throw new Error(
+            `Failed to fetch orders. Status: ${res.status}. Details: ${errorDetail}`
+          );
+        }
+        const data = await res.json();
+        setOrders(data);
       } catch (err) {
         console.error("Failed to fetch orders", err);
       }
@@ -38,30 +47,93 @@ const AdminOrders = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>User</TableCell>
+              <TableCell>User ID</TableCell>
               <TableCell>Products</TableCell>
               <TableCell>Total</TableCell>
               <TableCell>Method</TableCell>
+              <TableCell>Address</TableCell>
+              <TableCell>Contact</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Placed On</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {orders.map((order) => (
               <TableRow key={order._id}>
-                <TableCell>{order.user?.name}</TableCell>
+                <TableCell>{order.userId?.email || "N/A"}</TableCell>
                 <TableCell>
-                  {order.products.map((item, index) => (
+                  {order.items.map((item, index) => (
                     <div key={index}>
-                      {item.quantity} × {item.product}
+                      {item.quantity} ×{" "}
+                      {item.productId?.title || "Product Deleted"}
                     </div>
                   ))}
                 </TableCell>
-                <TableCell>Rs. {order.totalPrice}</TableCell>
-                <TableCell>{order.paymentMethod}</TableCell>
-                <TableCell>{order.status}</TableCell>
+                <TableCell>Rs. {order.total}</TableCell>
+                <TableCell>{order.paymentMethod.toUpperCase()}</TableCell>
+                <TableCell>{order.address}</TableCell>
+                <TableCell>{order.contactNumber}</TableCell>
+                <TableCell>{order.status || "Pending"}</TableCell>
                 <TableCell>
                   {new Date(order.createdAt).toLocaleString()}
+                </TableCell>
+                <TableCell>
+                  {order.status === "pending" ? (
+                    <button
+                      style={{
+                        backgroundColor: "#1976d2",
+                        color: "white",
+                        border: "none",
+                        padding: "5px 10px",
+                        borderRadius: "5px",
+                        cursor: "pointer",
+                      }}
+                      onClick={async () => {
+                        const confirm = window.confirm(
+                          "Mark this order as 'On its way'?"
+                        );
+                        if (!confirm) return;
+
+                        try {
+                          const res = await fetch(
+                            `http://localhost:5000/api/orders/${order._id}/status`,
+                            {
+                              method: "PUT",
+                              headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${localStorage.getItem(
+                                  "token"
+                                )}`,
+                              },
+                            }
+                          );
+                          if (res.ok) {
+                            alert("Order marked as 'On its way'");
+                            // Re-fetch orders
+                            setOrders((prev) =>
+                              prev.map((o) =>
+                                o._id === order._id
+                                  ? { ...o, status: "shipped" }
+                                  : o
+                              )
+                            );
+                          } else {
+                            alert("Failed to update order");
+                          }
+                        } catch (err) {
+                          console.error("Update error", err);
+                          alert("Error updating order");
+                        }
+                      }}
+                    >
+                      On its Way
+                    </button>
+                  ) : (
+                    <Typography variant="body2" color="success.main">
+                      {order.status}
+                    </Typography>
+                  )}
                 </TableCell>
               </TableRow>
             ))}

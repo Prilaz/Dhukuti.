@@ -26,7 +26,6 @@ const AdminDashboard = ({ children }) => {
   };
 
   const menuItems = [
-    { text: "Dashboard", path: "/admin" },
     { text: "Products", path: "/admin/products" },
     { text: "Add Product", path: "/admin/products/add" },
     //{ text: "Team Members", path: "/admin/about/team" },

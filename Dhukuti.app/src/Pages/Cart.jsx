@@ -59,7 +59,7 @@ const CartPage = () => {
 
     const orderData = {
       items: cart
-        .filter((item) => item.productId && item.productId._id) // ✅ Filter out invalid items
+        .filter((item) => item.productId && item.productId._id)
         .map((item) => ({
           productId: item.productId._id,
           quantity: item.quantity,
@@ -69,6 +69,7 @@ const CartPage = () => {
       contactNumber,
       paymentMethod,
     };
+
     try {
       setLoading(true);
       const res = await fetch("http://localhost:5000/api/orders", {
@@ -84,6 +85,11 @@ const CartPage = () => {
         setShowConfirm(false);
         setOrderSuccess(true);
         clearCart();
+
+        // ✅ Hide success modal after 3 seconds
+        setTimeout(() => {
+          setOrderSuccess(false);
+        }, 3000);
       } else {
         const data = await res.json();
         alert(data.message || "Order failed");
@@ -307,10 +313,13 @@ const CartPage = () => {
           <Typography variant="h5" gutterBottom color="success.main">
             🎉 Order Successful!
           </Typography>
-          <CircularProgress color="success" />
-          <Typography variant="body2" sx={{ mt: 2 }}>
-            Thank you for shopping with us.
-          </Typography>
+
+          {/* ✅ Only show spinner if still loading */}
+          {!loading && (
+            <Typography variant="body2" sx={{ mt: 2 }}>
+              Thank you for shopping with us.
+            </Typography>
+          )}
         </Box>
       </Modal>
     </Box>

@@ -1,61 +1,28 @@
 const mongoose = require("mongoose");
 
-const orderSchema = new mongoose.Schema(
-  {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    items: [
-      {
-        productId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-          required: true,
-        },
-        quantity: {
-          type: Number,
-          required: true,
-          default: 1,
-        },
+const orderSchema = new mongoose.Schema({
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  items: [
+    {
+      productId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+        required: true,
       },
-    ],
-    shippingAddress: {
-      fullName: String,
-      address: String,
-      city: String,
-      postalCode: String,
-      country: String,
-      phone: String,
+      quantity: { type: Number, required: true },
     },
-    total: {
-      type: Number,
-      required: true,
-    },
-    paymentMethod: {
-      type: String,
-      enum: ["cod", "online"],
-      required: true,
-    },
-    isPaid: {
-      type: Boolean,
-      default: false,
-    },
-    paidAt: Date,
-    paymentResult: {
-      id: String,
-      status: String,
-      update_time: String,
-      email_address: String,
-    },
-    status: {
-      type: String,
-      enum: ["Pending", "Processing", "Shipped", "Delivered", "Cancelled"],
-      default: "Pending",
-    },
+  ],
+  total: { type: Number, required: true },
+  address: { type: String, required: true },
+  contactNumber: { type: String, required: true },
+  paymentMethod: {
+    type: String,
+    enum: ["cod", "esewa", "khalti"],
+    required: true,
   },
-  { timestamps: true }
-);
+  status: { type: String, default: "pending" },
+  createdAt: { type: Date, default: Date.now },
+});
 
-module.exports = mongoose.model("Order", orderSchema);
+const Order = mongoose.model("Order", orderSchema);
+module.exports = Order;

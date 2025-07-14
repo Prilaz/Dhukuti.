@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+{
+  /*} import React, { useEffect, useState } from "react";
 import { Box, Typography, Card, CardContent, Divider } from "@mui/material";
 
 const OrdersPage = () => {
@@ -55,3 +56,5 @@ const OrdersPage = () => {
 };
 
 export default OrdersPage;
+*/
+}
